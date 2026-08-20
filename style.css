@@ -1,61 +1,181 @@
+:root {
+  --bg: #f4f6f9;
+  --card-bg: #ffffff;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --error: #dc2626;
+  --success: #16a34a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  max-width: 700px;
-  margin: 30px auto;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  max-width: 800px;
+  margin: 40px auto;
   padding: 0 20px;
-  color: #222;
 }
 
 h1 {
   text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: var(--primary);
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: var(--text-main);
 }
 
 section {
-  margin-bottom: 30px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
-
-fieldset {
-  border: 1px solid #ccc;
-  margin: 10px 0;
-  padding: 10px;
+  background-color: var(--card-bg);
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border);
 }
 
 label {
   display: block;
-  margin: 6px 0;
+  margin: 6px 0 4px;
+  font-size: 14px;
+  color: var(--text-muted);
 }
 
 input[type="text"],
 input[type="number"],
 select {
-  padding: 6px;
+  padding: 10px 12px;
   margin-top: 4px;
   width: 100%;
-  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.15s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 14px 0;
+}
+
+fieldset legend {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+/* Skill checkboxes styled as pills */
+fieldset label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 14px;
+  margin: 4px 6px 4px 0;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: auto;
+}
+
+fieldset label:has(input:checked) {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+fieldset input[type="checkbox"] {
+  accent-color: var(--primary);
 }
 
 button {
-  margin-top: 12px;
-  padding: 8px 16px;
+  margin-top: 14px;
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
 }
 
 .error-text {
-  color: #c0392b;
-  font-size: 0.9em;
+  color: var(--error);
+  font-size: 13px;
   min-height: 18px;
+  margin-top: 6px;
+}
+
+/* Team cards */
+#team-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
 }
 
 .team-card {
-  border: 1px solid #999;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 15px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: var(--bg);
+  border-left: 4px solid var(--primary);
 }
+
+.team-card:nth-child(2) { border-left-color: #059669; }
+.team-card:nth-child(3) { border-left-color: #d97706; }
+.team-card:nth-child(4) { border-left-color: #dc2626; }
+.team-card:nth-child(5) { border-left-color: #7c3aed; }
+.team-card:nth-child(6) { border-left-color: #0891b2; }
 
 .team-card h3 {
   margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: var(--text-main);
+}
+
+.team-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+}
+
+.team-card li {
+  padding: 4px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.team-card p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
 }
