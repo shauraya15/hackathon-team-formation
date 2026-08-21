@@ -1,14 +1,70 @@
 // app.js
-// Wires everything together - listens for user actions and calls
-// the right functions from the other files. No real logic lives
-// here, just the glue.
+// Wires everything together. Tracks which hackathon is currently
+// active, and every form/storage/algorithm action operates within
+// that hackathon's scope.
+
+let activeHackathonId = null;
+
+const hackathonSelect = document.getElementById("hackathon-select");
+const newHackathonInput = document.getElementById("new-hackathon-name");
+const createHackathonBtn = document.getElementById("create-hackathon-btn");
+const activeHackathonLabel = document.getElementById("active-hackathon-label");
 
 const form = document.getElementById("participant-form");
 const formError = document.getElementById("form-error");
 const generateBtn = document.getElementById("generate-teams-btn");
+const clearBtn = document.getElementById("clear-participants-btn");
+
+// ---------- Hackathon selection ----------
+
+function loadHackathonsIntoDropdown() {
+  const hackathons = getHackathons();
+  hackathonSelect.innerHTML = '<option value="">-- select a hackathon --</option>';
+
+  hackathons.forEach((hackathon) => {
+    const option = document.createElement("option");
+    option.value = hackathon.id;
+    option.textContent = hackathon.name;
+    hackathonSelect.appendChild(option);
+  });
+}
+
+function setActiveHackathon(id, name) {
+  activeHackathonId = id;
+  activeHackathonLabel.textContent = id ? `Active hackathon: ${name}` : "";
+  document.getElementById("team-cards-container").innerHTML = "";
+}
+
+hackathonSelect.addEventListener("change", () => {
+  const selectedId = hackathonSelect.value;
+  const hackathons = getHackathons();
+  const selected = hackathons.find((h) => h.id === selectedId);
+  setActiveHackathon(selected ? selected.id : null, selected ? selected.name : "");
+});
+
+createHackathonBtn.addEventListener("click", () => {
+  const name = newHackathonInput.value.trim();
+  if (name === "") {
+    alert("Enter a name for the new hackathon.");
+    return;
+  }
+
+  const newHackathon = saveHackathon(name);
+  newHackathonInput.value = "";
+  loadHackathonsIntoDropdown();
+  hackathonSelect.value = newHackathon.id;
+  setActiveHackathon(newHackathon.id, newHackathon.name);
+});
+
+// ---------- Participant form ----------
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+
+  if (!activeHackathonId) {
+    formError.textContent = "Select or create a hackathon first.";
+    return;
+  }
 
   const name = document.getElementById("participant-name").value;
   const primarySkill = document.getElementById("primary-skill").value;
@@ -25,7 +81,7 @@ form.addEventListener("submit", (event) => {
 
   formError.textContent = "";
 
-  saveParticipant({
+  saveParticipant(activeHackathonId, {
     name: name.trim(),
     skills: selectedSkills,
     primarySkill: primarySkill,
@@ -34,9 +90,16 @@ form.addEventListener("submit", (event) => {
   form.reset();
 });
 
+// ---------- Team generation ----------
+
 generateBtn.addEventListener("click", () => {
+  if (!activeHackathonId) {
+    alert("Select or create a hackathon first.");
+    return;
+  }
+
   const numTeams = parseInt(document.getElementById("team-count").value, 10);
-  const participants = getParticipants();
+  const participants = getParticipants(activeHackathonId);
 
   if (!numTeams || numTeams < 2) {
     alert("Enter a valid number of teams (2 or more).");
@@ -44,10 +107,29 @@ generateBtn.addEventListener("click", () => {
   }
 
   if (participants.length === 0) {
-    alert("No participants added yet.");
+    alert("No participants added yet for this hackathon.");
     return;
   }
 
   const teams = generateTeams(participants, numTeams);
   renderTeams(teams);
 });
+
+// ---------- Clear participants (scoped to active hackathon) ----------
+
+clearBtn.addEventListener("click", () => {
+  if (!activeHackathonId) {
+    alert("Select a hackathon first.");
+    return;
+  }
+
+  const confirmed = confirm("This will remove all participants for this hackathon. Continue?");
+  if (confirmed) {
+    clearParticipants(activeHackathonId);
+    document.getElementById("team-cards-container").innerHTML = "";
+  }
+});
+
+// ---------- Initial load ----------
+
+loadHackathonsIntoDropdown();
