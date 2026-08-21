@@ -106,7 +106,7 @@ section {
   padding: 14px 16px;
 }
 
-.col-right { }
+
 .col-right section {
   display: flex;
   flex-direction: column;
