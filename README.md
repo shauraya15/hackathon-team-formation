@@ -75,4 +75,4 @@ know anything about LocalStorage or hackathons — they just take data in
 and return/display results. This kept the algorithm and the UI
 completely decoupled, which is why adding multi-hackathon support later
 only required changes to storage.js and app.js, with zero changes
-to the algorithm itself.
+to the algorithm itself
