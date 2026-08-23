@@ -75,4 +75,35 @@ know anything about LocalStorage or hackathons — they just take data in
 and return/display results. This kept the algorithm and the UI
 completely decoupled, which is why adding multi-hackathon support later
 only required changes to storage.js and app.js, with zero changes
-to the algorithm itself
+to the algorithm itself.
+
+## Screenshots
+
+### Project Overview
+![Overview](screenshots/overview-full.png)
+
+### Hackathon Selection
+![Hackathon selection](screenshots/hackathon-selection.png)
+
+### Empty Participant Form
+![Empty form](screenshots/Empty-form-participants.png)
+
+### Filled Participant Form
+![Filled form](screenshots/filled-form.png)
+
+### Generate Teams
+![Generate teams](screenshots/generate-teams.png)
+
+### Team Cards View
+![Team cards](screenshots/teams-cards-view.png)
+
+## Future Work (Phase 2)
+
+- Participant self-registration with login/signup, instead of
+  organizer-only data entry
+- Role-based views: organizer dashboard vs. a participant dashboard
+  showing "hackathons you're registered in"
+- These require proper relational data (which user is registered to
+  which hackathon) and real authentication — both natural fits for
+  Phase 2's MongoDB schemas and JWT-based auth, rather than being
+  simulated in LocalStorage
