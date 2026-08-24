@@ -45,15 +45,20 @@ function createEmptyTeams(numTeams) {
 }
 
 function pickBestTeam(teams, primarySkill, maxTeamSize) {
-  // Prefer teams that still have room. If every team is full
-  // (can happen with an odd participant count), fall back to
-  // considering all teams so nobody gets left unassigned.
   const availableTeams = teams.filter((team) => team.members.length < maxTeamSize);
   const candidates = availableTeams.length > 0 ? availableTeams : teams;
 
   let bestTeam = candidates[0];
   candidates.forEach((team) => {
-    if (team.skillCounts[primarySkill] < bestTeam.skillCounts[primarySkill]) {
+    const teamCount = team.skillCounts[primarySkill];
+    const bestCount = bestTeam.skillCounts[primarySkill];
+
+    if (teamCount < bestCount) {
+      bestTeam = team;
+    } else if (teamCount === bestCount && team.members.length < bestTeam.members.length) {
+      // Tie on skill count — prefer whichever team is currently smaller,
+      // so teams fill up roughly evenly instead of always favoring
+      // earlier teams in the array.
       bestTeam = team;
     }
   });
