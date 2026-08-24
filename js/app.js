@@ -101,8 +101,8 @@ generateBtn.addEventListener("click", () => {
   const numTeams = parseInt(document.getElementById("team-count").value, 10);
   const participants = getParticipants(activeHackathonId);
 
-  if (!numTeams || numTeams < 2) {
-    alert("Enter a valid number of teams (2 or more).");
+  if (!numTeams || numTeams < 1) {
+    alert("Enter a valid number of teams.");
     return;
   }
 
@@ -111,10 +111,15 @@ generateBtn.addEventListener("click", () => {
     return;
   }
 
+  const feasibility = canFormTeams(participants.length, numTeams);
+  if (!feasibility.valid) {
+    alert(feasibility.message);
+    return;
+  }
+
   const teams = generateTeams(participants, numTeams);
   renderTeams(teams);
 });
-
 // ---------- Clear participants (scoped to active hackathon) ----------
 
 clearBtn.addEventListener("click", () => {
