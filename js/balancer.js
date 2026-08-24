@@ -19,8 +19,8 @@
 //    team sizes stay even instead of always favoring earlier teams.
 
 const CATEGORIES = ["Frontend", "Backend", "Design", "Data/ML", "DevOps/Cloud"];
-const MIN_TEAM_SIZE = 3;
-const MAX_TEAM_SIZE = 4;
+const MIN_TEAM_SIZE = 2;
+const MAX_TEAM_SIZE = 5;
 
 // Checks whether numParticipants can actually be split into numTeams
 // teams while keeping every team between MIN_TEAM_SIZE and
