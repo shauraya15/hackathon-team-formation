@@ -5,18 +5,20 @@
 // people while another has none.
 //
 // Approach:
-// 1. Before doing anything, check the numbers are even feasible —
-//    every team must end up with between MIN_TEAM_SIZE and
-//    MAX_TEAM_SIZE members. If not, refuse instead of producing
-//    broken teams (e.g. teams with only 1 person).
-// 2. Sort participants so the ones with FEWER skills go first.
-//    Someone with only 2 skills is harder to place well later, so
-//    we lock them into a team while there's still flexibility.
-// 3. Walk through that sorted list and drop each participant into
-//    whichever team currently has the LOWEST count of that
-//    participant's primary skill (and still has room). On a tie,
-//    prefer whichever team currently has fewer members overall, so
-//    team sizes stay even instead of always favoring earlier teams.
+// 1. Feasibility check first — refuse if the participant count can't
+//    possibly satisfy MIN_TEAM_SIZE / MAX_TEAM_SIZE for the requested
+//    number of teams.
+// 2. Sort participants by number of skills, fewest first — they're
+//    harder to place well later, so we lock them in while there's
+//    still flexibility.
+// 3. For each participant, normally assign by SKILL BALANCE first —
+//    whichever team has the fewest people with that participant's
+//    primary skill. But before doing that, check whether we're
+//    running low on participants relative to how many are still
+//    needed to bring every under-sized team up to MIN_TEAM_SIZE. If
+//    it's genuinely urgent, skill balance is temporarily overridden
+//    and the participant is placed into an under-minimum team instead
+//    — otherwise a team could get stranded below the minimum.
 
 const CATEGORIES = ["Frontend", "Backend", "Design", "Data/ML", "DevOps/Cloud"];
 const MIN_TEAM_SIZE = 2;
@@ -54,8 +56,9 @@ function generateTeams(participants, numTeams) {
     (a, b) => a.skills.length - b.skills.length
   );
 
-  sortedParticipants.forEach((participant) => {
-    const team = pickBestTeam(teams, participant.primarySkill, MAX_TEAM_SIZE);
+  sortedParticipants.forEach((participant, index) => {
+    const remainingIncludingCurrent = sortedParticipants.length - index;
+    const team = pickBestTeam(teams, participant.primarySkill, remainingIncludingCurrent);
     team.members.push(participant);
     team.skillCounts[participant.primarySkill]++;
   });
@@ -73,11 +76,34 @@ function createEmptyTeams(numTeams) {
   return teams;
 }
 
-function pickBestTeam(teams, primarySkill, maxTeamSize) {
-  // Prefer teams that still have room.
-  const availableTeams = teams.filter((team) => team.members.length < maxTeamSize);
-  const candidates = availableTeams.length > 0 ? availableTeams : teams;
+function pickBestTeam(teams, primarySkill, remainingIncludingCurrent) {
+  // How many more participants would it take to bring every
+  // currently under-minimum team up to MIN_TEAM_SIZE?
+  const underMinTeams = teams.filter((t) => t.members.length < MIN_TEAM_SIZE);
+  const neededToReachMin = underMinTeams.reduce(
+    (sum, t) => sum + (MIN_TEAM_SIZE - t.members.length),
+    0
+  );
 
+  // If the participants left (including this one) are exactly or
+  // barely enough to cover that need, we can't afford to skip an
+  // under-minimum team just for skill balance — do it now or it
+  // becomes impossible later.
+  const isUrgent = neededToReachMin >= remainingIncludingCurrent;
+
+  let candidates;
+  if (isUrgent) {
+    candidates = underMinTeams.filter((t) => t.members.length < MAX_TEAM_SIZE);
+  } else {
+    candidates = teams.filter((t) => t.members.length < MAX_TEAM_SIZE);
+  }
+
+  // Safety fallback — should rarely trigger given the feasibility
+  // check up front, but never leave a participant unplaced.
+  if (candidates.length === 0) candidates = teams;
+
+  // Within the chosen candidate pool, pick by skill balance first,
+  // team size only as a tie-breaker.
   let bestTeam = candidates[0];
   candidates.forEach((team) => {
     const teamCount = team.skillCounts[primarySkill];
@@ -86,9 +112,6 @@ function pickBestTeam(teams, primarySkill, maxTeamSize) {
     if (teamCount < bestCount) {
       bestTeam = team;
     } else if (teamCount === bestCount && team.members.length < bestTeam.members.length) {
-      // Tie on skill count — prefer whichever team is currently
-      // smaller, so teams fill up evenly instead of always
-      // favoring earlier teams in the array.
       bestTeam = team;
     }
   });
