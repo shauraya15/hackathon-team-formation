@@ -1,115 +1,266 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hackathon Team Formation Tool</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synapse Teams — Intelligent Skill-Balanced Hackathon Formation</title>
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
 </head>
 <body>
 
-  <header class="topbar">
-    <h1>Hackathon Team Formation Tool</h1>
-    <p id="active-hackathon-label"></p>
-    <nav class="chips">
-      <a href="#hackathon-section">Hackathon</a>
-      <a href="#participant-form-section">Participant</a>
-      <a href="#results-section">Teams</a>
-    </nav>
+  <!-- ==================== STICKY NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">⚡</div>
+        <span>Synapse<span style="color:var(--brand-primary)">Teams</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="#problem" class="nav-link">The Problem</a></li>
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#live-demo" class="nav-link">Live Balancer</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="participant-login.html" class="btn btn-ghost btn-sm">Participant Portal</a>
+        <a href="organizer-login.html" class="btn btn-primary btn-sm btn-glow">Organizer Dashboard</a>
+      </div>
+    </div>
   </header>
 
-  <main class="workspace">
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="section section-hero">
+    <div class="container hero-wrapper">
+      <div class="hero-content">
+        <div class="hero-pill-badge">
+          <span class="hero-pill-dot"></span>
+          <span>Deterministic Team Balancing Algorithm</span>
+        </div>
 
-    <!-- ===== Left column: setup ===== -->
-    <div class="col col-left">
+        <h1 class="hero-headline">
+          Build perfectly balanced <span class="hero-headline-accent">hackathon teams</span> in seconds.
+        </h1>
 
-      <!-- ===== Hackathon Selection Section ===== -->
-      <section id="hackathon-section">
-        <h2>Hackathon</h2>
-        <div class="grid-2">
-          <div class="field">
-            <label for="hackathon-select">Select an existing hackathon</label>
-            <select id="hackathon-select">
-              <option value="">-- select a hackathon --</option>
-            </select>
+        <p class="hero-pitch">
+          Stop random teams from hoarding four frontend devs while leaving others with zero backend talent. 
+          Synapse distributes cross-functional skill sets evenly with zero server latency.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="organizer-login.html" class="btn btn-primary btn-lg btn-glow">
+            <span>⚡ I'm an Organizer</span>
+          </a>
+          <a href="participant-login.html" class="btn btn-surface btn-lg">
+            <span>🎯 I'm a Participant</span>
+          </a>
+        </div>
+
+        <!-- Metric Counter Strip -->
+        <div style="display:flex;gap:2rem;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border-subtle);">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:1.75rem;font-weight:700;color:var(--text-primary);" id="home-stat-hackathons">0</div>
+            <div style="font-size:0.8rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.05em;">Hackathons</div>
           </div>
-          <div class="field">
-            <label for="new-hackathon-name">Or create a new one</label>
-            <div class="inline">
-              <input type="text" id="new-hackathon-name" placeholder="e.g. Winter Hackathon 2026" />
-              <button id="create-hackathon-btn" type="button">Create</button>
-            </div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:1.75rem;font-weight:700;color:var(--brand-primary);" id="home-stat-participants">0</div>
+            <div style="font-size:0.8rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.05em;">Participants</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:1.75rem;font-weight:700;color:var(--brand-secondary);" id="home-stat-teams">0</div>
+            <div style="font-size:0.8rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.05em;">Teams Formed</div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- ===== Participant Form Section ===== -->
-      <section id="participant-form-section">
-        <h2>Add Participant</h2>
-        <form id="participant-form">
-          <div class="grid-2">
-            <div class="field">
-              <label for="participant-name">Name</label>
-              <input type="text" id="participant-name" required />
-            </div>
-            <div class="field">
-              <label for="primary-skill">Primary skill</label>
-              <select id="primary-skill">
-                <option value="">-- select your strongest skill --</option>
-                <option value="Frontend">Frontend</option>
-                <option value="Backend">Backend</option>
-                <option value="Design">Design</option>
-                <option value="Data/ML">Data/ML</option>
-                <option value="DevOps/Cloud">DevOps/Cloud</option>
-              </select>
-            </div>
+      <!-- Live Interactive Balancer Demo Widget -->
+      <div id="live-demo" class="hero-preview-card">
+        <div class="preview-badge-header">
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;"></div>
+            <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;"></div>
+            <div style="width:10px;height:10px;border-radius:50%;background:#10b981;"></div>
+            <span style="font-size:0.85rem;font-weight:600;margin-left:0.5rem;">Live Algorithm Preview</span>
           </div>
-
-          <fieldset>
-            <legend>Select your skills (choose 2 to 4)</legend>
-            <label><input type="checkbox" name="skill" value="Frontend" /> Frontend</label>
-            <label><input type="checkbox" name="skill" value="Backend" /> Backend</label>
-            <label><input type="checkbox" name="skill" value="Design" /> Design</label>
-            <label><input type="checkbox" name="skill" value="Data/ML" /> Data/ML</label>
-            <label><input type="checkbox" name="skill" value="DevOps/Cloud" /> DevOps/Cloud</label>
-          </fieldset>
-
-          <p id="form-error" class="error-text"></p>
-
-          <button type="submit">Add Participant</button>
-        </form>
-      </section>
-
-      <!-- ===== Team Generation Section ===== -->
-      <section id="team-generation-section" class="actionbar">
-        <h2>Generate Teams</h2>
-        <div class="inline">
-          <div class="field field-sm">
-            <label for="team-count">Number of teams</label>
-            <input type="number" id="team-count" min="2" />
-          </div>
-          <button id="generate-teams-btn">Generate Teams</button>
-          <button id="clear-participants-btn" type="button" class="ghost">Clear All</button>
+          <span class="preview-code-tag">balancer.js active</span>
         </div>
-      </section>
 
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem;">
+          Try the live greedy balancer on a sample pool of 6 participants across 5 categories:
+        </p>
+
+        <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:1rem;">
+          <label style="font-size:0.85rem;color:var(--text-tertiary);">Split into:</label>
+          <select id="preview-team-count" class="form-select" style="width:auto;padding:0.4rem 0.8rem;font-size:0.85rem;">
+            <option value="2" selected>2 Teams (3 members each)</option>
+            <option value="3">3 Teams (2 members each)</option>
+          </select>
+          <button id="preview-simulate-btn" class="btn btn-primary btn-sm">Re-Balance</button>
+        </div>
+
+        <div id="preview-results-container" style="min-height:180px;">
+          <!-- Dynamically generated by home.js via balancer.js -->
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- ===== Results Section ===== -->
-    <div class="col col-right">
-      <section id="results-section">
-        <h2 class="sticky-head">Teams</h2>
-        <div id="team-cards-container"></div>
-      </section>
+  <!-- ==================== THE PROBLEM STATEMENT ==================== -->
+  <section id="problem" class="section" style="background:var(--bg-surface);">
+    <div class="container">
+      <div style="text-align:center;max-width:720px;margin:0 auto 2.5rem;">
+        <span class="badge badge-devops" style="margin-bottom:0.75rem;">The Hackathon Paradox</span>
+        <h2>Why Random Team Formation Fails</h2>
+        <p style="margin-top:0.75rem;">
+          When organizers manually scramble signups or let friends bunch together, hackathons suffer from deep skill deficits. 
+          Projects stall and participants leave frustrated.
+        </p>
+      </div>
+
+      <div class="problem-grid">
+        <div class="problem-box-danger">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+            <span style="font-size:1.5rem;">❌</span>
+            <h3 style="color:var(--brand-rose);font-size:1.25rem;">Unbalanced / Random Grouping</h3>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;color:var(--text-secondary);font-size:0.925rem;">
+            <li>⚠️ <strong>Skill Hoarding:</strong> One team ends up with four Frontend developers and no Backend or DevOps support.</li>
+            <li>⚠️ <strong>Stranded Participants:</strong> Solo joiners get left out or forced into ill-fitting teams.</li>
+            <li>⚠️ <strong>Unfinished Demos:</strong> 40%+ of hackathon teams fail to submit because critical engineering roles are missing.</li>
+          </ul>
+        </div>
+
+        <div class="problem-box-success">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+            <span style="font-size:1.5rem;">✨</span>
+            <h3 style="color:var(--brand-primary);font-size:1.25rem;">Synapse Intelligent Balancing</h3>
+          </div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;color:var(--text-secondary);font-size:0.925rem;">
+            <li>✅ <strong>Cross-Functional Diversity:</strong> Every team gets an optimal spread of Frontend, Backend, Design, Data/ML, and DevOps.</li>
+            <li>✅ <strong>Constraint Guarantees:</strong> Strictly enforces min (2) and max (5) team bounds so nobody is stranded.</li>
+            <li>✅ <strong>Fewest-Skills-First Priority:</strong> Specialized candidates are locked in before generalists to ensure optimal global balance.</li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </section>
 
-  </main>
+  <!-- ==================== HOW IT WORKS ==================== -->
+  <section id="how-it-works" class="section">
+    <div class="container">
+      <div style="text-align:center;max-width:700px;margin:0 auto 1.5rem;">
+        <span class="badge badge-backend" style="margin-bottom:0.75rem;">Workflow</span>
+        <h2>How Synapse Operates</h2>
+        <p>From event creation to team reveal in 4 seamless stages.</p>
+      </div>
 
-  <!-- Scripts load in dependency order -->
+      <div class="how-it-works-track">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h4 style="margin-bottom:0.5rem;">Organizer Creates Event</h4>
+          <p style="font-size:0.875rem;">Specify hackathon mode (Online/Offline), venue, dates, capacity, and deadlines.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h4 style="margin-bottom:0.5rem;">Participants Self-Register</h4>
+          <p style="font-size:0.875rem;">Students tag 2–4 competencies and elect their primary engineering strength.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h4 style="margin-bottom:0.5rem;">Greedy Math Balance</h4>
+          <p style="font-size:0.875rem;">The algorithm analyzes global primary skill counts and fills team vacancies deterministically.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <h4 style="margin-bottom:0.5rem;">Reveal & Collaboration</h4>
+          <p style="font-size:0.875rem;">Participants unlock their personalized team workspace with teammates' contact details & skill matrix.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FEATURES BENTO ==================== -->
+  <section id="features" class="section" style="background:var(--bg-surface);">
+    <div class="container">
+      <div style="text-align:center;max-width:700px;margin:0 auto 3rem;">
+        <span class="badge badge-data" style="margin-bottom:0.75rem;">Capabilities</span>
+        <h2>Engineered for Hackathon Organizers</h2>
+        <p>Complete control over participants, event formats, and team allocations.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-interactive">
+          <div style="font-size:2rem;margin-bottom:1rem;">⚖️</div>
+          <h4 style="margin-bottom:0.5rem;">Deterministic Balancing</h4>
+          <p style="font-size:0.875rem;">Proven greedy heuristic that guarantees minimum group size while optimizing skill coverage.</p>
+        </div>
+
+        <div class="card card-interactive">
+          <div style="font-size:2rem;margin-bottom:1rem;">🗂️</div>
+          <h4 style="margin-bottom:0.5rem;">Multi-Hackathon Isolation</h4>
+          <p style="font-size:0.875rem;">Host multiple events simultaneously. Each hackathon maintains an isolated participant roster.</p>
+        </div>
+
+        <div class="card card-interactive">
+          <div style="font-size:2rem;margin-bottom:1rem;">🔍</div>
+          <h4 style="margin-bottom:0.5rem;">Live Search & Filter</h4>
+          <p style="font-size:0.875rem;">Filter participant rosters by Frontend, Backend, Design, Data/ML, or DevOps in real-time.</p>
+        </div>
+
+        <div class="card card-interactive">
+          <div style="font-size:2rem;margin-bottom:1rem;">🔒</div>
+          <h4 style="margin-bottom:0.5rem;">Pre-Gen Skill Locking</h4>
+          <p style="font-size:0.875rem;">Participants can update skills before generation. Once teams are calculated, rosters lock securely.</p>
+        </div>
+
+        <div class="card card-interactive">
+          <div style="font-size:2rem;margin-bottom:1rem;">📋</div>
+          <h4 style="margin-bottom:0.5rem;">1-Click Team Export</h4>
+          <p style="font-size:0.875rem;">Copy formatted team lists directly to clipboard or export structured JSON for discord/slack bots.</p>
+        </div>
+
+        <div class="card card-interactive">
+          <div style="font-size:2rem;margin-bottom:1rem;">⚡</div>
+          <h4 style="margin-bottom:0.5rem;">Zero-Config Storage</h4>
+          <p style="font-size:0.875rem;">Runs 100% in the browser via LocalStorage. Zero backend servers or external API dependencies needed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div>
+        <div style="display:flex;align-items:center;gap:0.5rem;font-weight:700;color:var(--text-primary);margin-bottom:0.25rem;">
+          <span>⚡ SynapseTeams</span>
+        </div>
+        <p style="font-size:0.825rem;color:var(--text-tertiary);">
+          Built with Vanilla HTML, CSS, and JavaScript. 3-Person Academic Project.
+        </p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+        <span class="footer-badge">Phase 1: Vanilla JS + LocalStorage</span>
+        <a href="organizer-login.html" class="nav-link">Organizer Portal</a>
+        <a href="participant-login.html" class="nav-link">Participant Portal</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
   <script src="js/storage.js"></script>
   <script src="js/validation.js"></script>
   <script src="js/balancer.js"></script>
-  <script src="js/render.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/data-store.js"></script>
+  <script src="js/auth-state.js"></script>
+  <script src="js/ui-helpers.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>
