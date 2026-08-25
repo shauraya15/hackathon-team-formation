@@ -1,109 +1,119 @@
-# hackathon-team-formation
+﻿# Synapse Teams — Intelligent Skill-Balanced Hackathon Team Formation Platform
 
-A tool that automatically splits hackathon participants into balanced
-teams, so each team ends up with a spread of skills (Frontend, Backend,
-Design, Data/ML, DevOps/Cloud) instead of one team hoarding all the
-frontend people while another has none.
+A high-craft web platform that automatically splits hackathon participants into cross-functionally balanced teams using a deterministic greedy algorithm. It eliminates stack hoarding (e.g. four frontend developers on one team with zero backend or DevOps engineers) and ensures every student is placed into a viable team of 2 to 5 members.
 
-This is Phase 1 of a 2-phase build: a pure vanilla JavaScript version
-using the browser's LocalStorage for data, with no backend or database
-yet. Phase 2 will rebuild this as a full MERN stack application.
+Built with pure **Vanilla HTML5, CSS3, and JavaScript** using the browser's **LocalStorage** for data persistence. Zero backend frameworks, zero external build tools, and zero third-party libraries.
 
-## Features
+---
 
-- Create multiple hackathons and keep their participants separate
-- Add participants with a validated skill-tag form (choose 2–4 skills,
-  mark one as your primary skill)
-- Generate N balanced teams using a greedy skill-balancing algorithm
-- View results as team cards showing members and skill spread per team
-- Clear participants for a specific hackathon without affecting others
+## 👥 3-Person Team Contribution Split (Git Commit Roadmap)
 
-## Setup / How to Run
+This project is architected into 4 clean, separable modules so each team member can explain their exact contributions during code reviews and viva examinations:
 
-No installation or build step is needed — this is plain HTML, CSS, and
-JavaScript.
+| Member / Stage | Role & Responsibility | Core Files & Modules Built |
+| :--- | :--- | :--- |
+| **Member 1 (UI & Design System)** | Design System, Interactive Landing Page & Shared Data Store | `css/design-system.css`, `css/components.css`, `css/pages.css`, `index.html`, `js/data-store.js`, `js/ui-helpers.js`, `js/home.js` |
+| **Member 2 (Organizer Suite)** | Organizer Auth, Dashboard, Participant Roster CRUD & Team Generator | `organizer-login.html`, `organizer-dashboard.html`, `js/organizer.js`, `js/auth-state.js` |
+| **Member 3 (Participant Suite)** | Participant Auth, Browse Hackathons, Self-Registration & My Team View | `participant-login.html`, `participant-dashboard.html`, `js/participant.js` |
+| **Shared / Polish** | Algorithm Wrapping, LocalStorage Bridge & Viva Preparation | `js/balancer.js` (Preserved Core), `js/validation.js`, `js/storage.js`, `README.md` |
 
-1. Clone the repository:
-git clone https://github.com/shauraya15/hackathon-team-formation.git
-2. Open the project folder and open index.html directly in a browser
-   (double-click it, or use the VS Code "Live Server" extension for
-   auto-reload while developing).
-3. No server, database, or dependencies are required for Phase 1.
+---
 
-## Architecture / How It Works
+## ⚡ Core Features
 
-The project is split into small, single-purpose files so each part of
-the logic is easy to find, test, and explain independently:
+### 1. Public Landing Page (`index.html`)
+- **Google Antigravity-Grade Design**: Deep obsidian canvas (`#090d16`), high-contrast typography (`Plus Jakarta Sans`, `Inter`, `JetBrains Mono`), and fluid micro-interactions.
+- **Problem Statement Narrative**: Visual comparison of random unbalance vs. deterministic cross-functional grouping.
+- **Live Algorithm Teaser**: Interactive widget running `balancer.js` live directly on the landing page.
+- **Dual Portal Entry**: Quick-access routing for Organizers and Participants.
 
-- *index.html* — the page structure: hackathon selector, participant
-  form, and results section.
-- *style.css* — all visual styling.
-- *js/storage.js* — the data layer. Reads and writes hackathons and
-  their participants to LocalStorage. Each hackathon's participants are
-  stored under their own key (participants_<hackathonId>), so
-  different hackathons never mix their data.
-- *js/validation.js* — checks a participant's form entry (name
-  required, 2–4 skills selected, primary skill must be one of the
-  selected skills) before it's saved.
-- *js/balancer.js* — the core algorithm. Takes a list of participants
-  and a number of teams, and distributes participants so each team gets
-  an even spread of skill categories. Participants are sorted by number
-  of skills (fewer first, since they're harder to place well), then each
-  one is greedily assigned to whichever team currently has the fewest
-  people with that participant's primary skill.
-- *js/render.js* — takes the finished teams array and builds the team
-  cards shown on the page. Purely visual, makes no decisions.
-- *js/app.js* — the coordination layer. Listens for user actions
-  (selecting/creating a hackathon, submitting the form, clicking
-  Generate Teams or Clear Participants) and calls the right functions
-  from the other files in the right order.
+### 2. Organizer Portal (`organizer-login.html` & `organizer-dashboard.html`)
+- **Authentication**: LocalStorage-backed sign-in and sign-up with 1-click Demo Login.
+- **Event Metrics**: Real-time counting animations for Total Hackathons, Total Participants, and Formed Teams.
+- **Multi-Hackathon Manager**: Create, edit, and delete events with Mode (Online/Offline/Hybrid), Venue, Dates, and Capacity limits.
+- **Searchable Roster**: Filter participants by skill category (Frontend, Backend, Design, Data/ML, DevOps) or search by name.
+- **Participant CRUD**: Add, edit, or remove candidates with instant validation.
+- **Team Generation Engine**:
+  - Validates minimum/maximum capacity feasibility (`canFormTeams`).
+  - Executes greedy balancing math (`generateTeams`).
+  - Staggered card flip reveal animation.
+  - 1-Click Copy Team List (Markdown) and 1-Click Export JSON.
+- **Live Activity Feed**: Timestamped activity logs.
 
-### Data flow, end to end
+### 3. Participant Portal (`participant-login.html` & `participant-dashboard.html`)
+- **Student Authentication**: Profile tracking with College, Year of Study (1st–4th), and Bio.
+- **Browse Open Hackathons**: Discovery gallery with live graphical capacity fill meters.
+- **Self-Registration with Skills**: Select 2 to 4 competencies and mark 1 primary strength.
+- **Lifecycle Tracking**: Real-time status badges (`⏳ Waiting for Teams` vs. `⚡ Team Assigned`).
+- **"My Team" Celebratory View**: Complete view of assigned team number, teammates' contact badges, and team skill matrix.
+- **Pre-Gen Skill Locking**: Enables skill modifications prior to team formation, and automatically locks afterwards.
 
-1. Organizer selects or creates a hackathon → sets the "active"
-   hackathon in memory.
-2. Student fills the form → validated → saved into that hackathon's
-   participant list in LocalStorage.
-3. Organizer clicks "Generate Teams" → the active hackathon's
-   participants are pulled from storage and passed to the balancing
-   algorithm.
-4. The algorithm returns a teams array → passed to the renderer → team
-   cards appear on screen.
+---
 
-A deliberate design choice here: balancer.js and render.js don't
-know anything about LocalStorage or hackathons — they just take data in
-and return/display results. This kept the algorithm and the UI
-completely decoupled, which is why adding multi-hackathon support later
-only required changes to storage.js and app.js, with zero changes
-to the algorithm itself.
+## 📐 Data Architecture (LocalStorage Schemas)
 
-## Screenshots
+All state is persisted purely on the client side using structured JSON in `localStorage`:
 
-### Project Overview
-![Overview](screenshots/overview-full.png)
+```
+localStorage
+├── "organizers"                 → Array<{ id, name, org, email, phone, username, password, createdAt }>
+├── "participantAccounts"        → Array<{ id, name, email, phone, college, year, username, password, bio, createdAt }>
+├── "hackathons"                 → Array<{ id, name, description, startDate, endDate, mode, venue, deadline, maxParticipants, createdBy, teamsGenerated, generatedTeams, createdAt }>
+├── "participants_<hackathonId>" → Array<{ id, name, skills, primarySkill, participantId, college, registeredAt }>
+├── "activity_log"               → Array<{ id, text, hackathonId, type, time }>
+├── "loggedInOrganizerId"        → string (Session pointer)
+└── "loggedInParticipantId"       → string (Session pointer)
+```
 
-### Hackathon Selection
-![Hackathon selection](screenshots/hackathon-selection.png)
+---
 
-### Empty Participant Form
-![Empty form](screenshots/Empty-form-participants.png)
+## 🧠 How the Balancing Algorithm Works (`js/balancer.js`)
 
-### Filled Participant Form
-![Filled form](screenshots/filled-form.png)
+The core algorithm is a deterministic greedy balancing heuristic operating in 3 steps:
 
-### Generate Teams
-![Generate teams](screenshots/generate-teams.png)
+1. **Feasibility Gate (`canFormTeams`)**:
+   - Ensures `numParticipants >= numTeams * 2` (MIN_TEAM_SIZE = 2).
+   - Ensures `numParticipants <= numTeams * 5` (MAX_TEAM_SIZE = 5).
+   - Refuses invalid team counts before any allocations occur.
 
-### Team Cards View
-![Team cards](screenshots/teams-cards-view.png)
+2. **Fewest-Skills-First Priority Sorting**:
+   - Participants are sorted in ascending order of their skill count (`skills.length`).
+   - *Rationale*: Specialized candidates (e.g. knowing only Backend) are harder to place later. Allocating them first prevents teams from missing essential competencies.
 
-## Future Work (Phase 2)
+3. **Greedy Placement with Urgency Override (`pickBestTeam`)**:
+   - Calculates `neededToReachMin` across all teams currently below 2 members.
+   - If `neededToReachMin >= remainingParticipants`, triggers `isUrgent` mode to prevent any team from being stranded below the minimum size.
+   - Otherwise, places the participant into whichever candidate team currently holds the **fewest members with that participant's primary skill**. Ties are broken by smallest team size.
 
-- Participant self-registration with login/signup, instead of
-  organizer-only data entry
-- Role-based views: organizer dashboard vs. a participant dashboard
-  showing "hackathons you're registered in"
-- These require proper relational data (which user is registered to
-  which hackathon) and real authentication — both natural fits for
-  Phase 2's MongoDB schemas and JWT-based auth, rather than being
-  simulated in LocalStorage
+---
+
+## 🚀 Quick Setup / How to Run
+
+No installation, build step, or web server is required.
+
+1. **Clone or Download the Repository**:
+   ```bash
+   git clone https://github.com/shauraya15/hackathon-team-formation.git
+   ```
+2. **Open in Browser**:
+   - Double-click `index.html` in any modern web browser (Chrome, Edge, Firefox, Safari).
+   - Or right-click `index.html` and select **Open with Live Server** in VS Code.
+3. **Pre-Seeded Demo Accounts**:
+   - **Organizer**: Username: `organizer` | Password: `password123` *(or click "1-Click Demo Login")*
+   - **Participant**: Username: `participant` | Password: `password123` *(or click "1-Click Demo Login")*
+
+---
+
+## 🎓 GitHub Viva Q&A Guide
+
+### Q1: Why use pure Vanilla JS and LocalStorage instead of a framework?
+> **Answer**: Phase 1 focuses on mastering DOM manipulation, algorithm design, data structures, and client-side state management without the abstraction of frameworks. It makes the entire architecture inspectable and transparent.
+
+### Q2: Why sort participants by fewest skills first?
+> **Answer**: A participant who only knows DevOps has exactly one way to contribute, whereas a full-stack participant can fit multiple roles. Placing constrained candidates early leaves generalists available to fill remaining gaps later.
+
+### Q3: How is data isolation maintained between different hackathons?
+> **Answer**: Each hackathon's participants are stored under an isolated key: `participants_${hackathonId}`. Deleting or modifying one hackathon never affects another.
+
+### Q4: How does self-registration link to participant accounts?
+> **Answer**: When a logged-in participant registers, their account ID is saved in the participant record (`participantId`). The participant dashboard queries all hackathons and retrieves records where `participantId === currentParticipant.id`.
