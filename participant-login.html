@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Participant Portal — Synapse Teams</title>
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">⚡</div>
+        <span>Synapse<span style="color:var(--brand-primary)">Teams</span></span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-ghost btn-sm">← Back to Home</a>
+        <a href="organizer-login.html" class="btn btn-surface btn-sm">Organizer Portal</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== AUTH CONTAINER ==================== -->
+  <main class="auth-page-wrapper">
+    <div class="auth-container">
+      <div class="auth-card">
+        
+        <div class="auth-header">
+          <span class="badge badge-primary-star" style="margin-bottom:0.5rem;">Participant Portal</span>
+          <h2 id="auth-title">Participant Sign In</h2>
+          <p id="auth-subtitle" style="font-size:0.875rem;">Join hackathons, showcase your skills, and discover your team.</p>
+        </div>
+
+        <!-- Auth Tabs -->
+        <div class="auth-tabs">
+          <button id="tab-login-btn" class="auth-tab-btn active" type="button">Sign In</button>
+          <button id="tab-signup-btn" class="auth-tab-btn" type="button">Create Account</button>
+        </div>
+
+        <!-- ==================== LOGIN FORM ==================== -->
+        <form id="participant-login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-identifier">Username or Email</label>
+            <input type="text" id="login-identifier" class="form-input" placeholder="e.g. participant or alex@student.edu" required />
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <label class="form-label" for="login-password">Password</label>
+              <a href="#" id="forgot-password-link" style="font-size:0.8rem;color:var(--text-tertiary);">Forgot password?</a>
+            </div>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
+          </div>
+
+          <p id="login-error" class="form-error-msg"></p>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;margin-top:0.5rem;">
+            Sign In to Dashboard
+          </button>
+
+          <!-- 1-Click Demo Login -->
+          <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border-subtle);text-align:center;">
+            <p style="font-size:0.8rem;color:var(--text-tertiary);margin-bottom:0.65rem;">Evaluating or grading this project?</p>
+            <button type="button" id="demo-login-btn" class="btn btn-ghost btn-sm" style="width:100%;">
+              ⚡ 1-Click Sign In as Alex Rivera (Demo Student)
+            </button>
+          </div>
+        </form>
+
+        <!-- ==================== SIGNUP FORM ==================== -->
+        <form id="participant-signup-form" style="display:none;">
+          <div class="form-group">
+            <label class="form-label" for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" class="form-input" placeholder="e.g. Alex Rivera" required />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="signup-college">College / University</label>
+              <input type="text" id="signup-college" class="form-input" placeholder="e.g. Institute of Technology" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-year">Year of Study</label>
+              <select id="signup-year" class="form-select">
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year" selected>3rd Year</option>
+                <option value="4th Year">4th Year</option>
+                <option value="Postgraduate">Postgraduate</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="signup-email">Email Address</label>
+              <input type="email" id="signup-email" class="form-input" placeholder="alex@student.edu" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-phone">Phone Number</label>
+              <input type="tel" id="signup-phone" class="form-input" placeholder="+1 555-0144" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signup-username">Username</label>
+            <input type="text" id="signup-username" class="form-input" placeholder="e.g. alexrivera" required />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="signup-password">Password</label>
+              <input type="password" id="signup-password" class="form-input" placeholder="••••••••" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-confirm-password">Confirm Password</label>
+              <input type="password" id="signup-confirm-password" class="form-input" placeholder="••••••••" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signup-bio">Bio / Project Interests (Optional)</label>
+            <textarea id="signup-bio" class="form-textarea" rows="2" placeholder="Tell organizers what you like to build..."></textarea>
+          </div>
+
+          <p id="signup-error" class="form-error-msg"></p>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;margin-top:0.5rem;">
+            Create Participant Account
+          </button>
+        </form>
+
+        <div class="auth-footer-links">
+          <span>Are you hosting a hackathon?</span>
+          <a href="organizer-login.html" style="font-weight:600;margin-left:0.25rem;">Organizer Portal →</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/data-store.js"></script>
+  <script src="js/auth-state.js"></script>
+  <script src="js/ui-helpers.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // If already logged in, redirect to dashboard
+      if (getLoggedInParticipant()) {
+        window.location.href = "participant-dashboard.html";
+        return;
+      }
+
+      const tabLogin = document.getElementById("tab-login-btn");
+      const tabSignup = document.getElementById("tab-signup-btn");
+      const loginForm = document.getElementById("participant-login-form");
+      const signupForm = document.getElementById("participant-signup-form");
+      const authTitle = document.getElementById("auth-title");
+      const authSubtitle = document.getElementById("auth-subtitle");
+
+      tabLogin.addEventListener("click", () => {
+        tabLogin.classList.add("active");
+        tabSignup.classList.remove("active");
+        loginForm.style.display = "block";
+        signupForm.style.display = "none";
+        authTitle.textContent = "Participant Sign In";
+        authSubtitle.textContent = "Join hackathons, showcase your skills, and discover your team.";
+      });
+
+      tabSignup.addEventListener("click", () => {
+        tabSignup.classList.add("active");
+        tabLogin.classList.remove("active");
+        loginForm.style.display = "none";
+        signupForm.style.display = "block";
+        authTitle.textContent = "Create Participant Account";
+        authSubtitle.textContent = "Set up your student profile to register for hackathons.";
+      });
+
+      // Login Submission
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const ident = document.getElementById("login-identifier").value.trim().toLowerCase();
+        const pass = document.getElementById("login-password").value;
+        const errEl = document.getElementById("login-error");
+
+        const accounts = getParticipantAccounts();
+        const found = accounts.find(a => (a.username === ident || a.email === ident) && a.password === pass);
+
+        if (!found) {
+          errEl.textContent = "Invalid username/email or password. Please try again.";
+          return;
+        }
+
+        errEl.textContent = "";
+        setLoggedInParticipant(found.id);
+        showToast(`Welcome back, ${found.name}!`, "success");
+        setTimeout(() => {
+          window.location.href = "participant-dashboard.html";
+        }, 400);
+      });
+
+      // Demo 1-Click Login
+      document.getElementById("demo-login-btn").addEventListener("click", () => {
+        const accounts = getParticipantAccounts();
+        let demoPt = accounts.find(a => a.username === "participant");
+        if (!demoPt && accounts.length > 0) demoPt = accounts[0];
+
+        if (demoPt) {
+          setLoggedInParticipant(demoPt.id);
+          showToast(`Logged in as demo student: ${demoPt.name}`, "success");
+          setTimeout(() => {
+            window.location.href = "participant-dashboard.html";
+          }, 300);
+        } else {
+          showToast("Demo participant account not found.", "error");
+        }
+      });
+
+      // Signup Submission
+      signupForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("signup-name").value.trim();
+        const college = document.getElementById("signup-college").value.trim();
+        const year = document.getElementById("signup-year").value;
+        const email = document.getElementById("signup-email").value.trim().toLowerCase();
+        const phone = document.getElementById("signup-phone").value.trim();
+        const username = document.getElementById("signup-username").value.trim().toLowerCase();
+        const pass = document.getElementById("signup-password").value;
+        const confirmPass = document.getElementById("signup-confirm-password").value;
+        const bio = document.getElementById("signup-bio").value.trim();
+        const errEl = document.getElementById("signup-error");
+
+        if (pass !== confirmPass) {
+          errEl.textContent = "Passwords do not match.";
+          return;
+        }
+
+        if (pass.length < 4) {
+          errEl.textContent = "Password must be at least 4 characters.";
+          return;
+        }
+
+        const accounts = getParticipantAccounts();
+        if (accounts.some(a => a.username === username)) {
+          errEl.textContent = "This username is already taken.";
+          return;
+        }
+        if (accounts.some(a => a.email === email)) {
+          errEl.textContent = "An account with this email already exists.";
+          return;
+        }
+
+        errEl.textContent = "";
+        const newAccount = saveParticipantAccount({ name, college, year, email, phone, username, password: pass, bio });
+        setLoggedInParticipant(newAccount.id);
+        showToast("Student account created successfully!", "success");
+        setTimeout(() => {
+          window.location.href = "participant-dashboard.html";
+        }, 400);
+      });
+
+      // Forgot Password Modal/Toast
+      document.getElementById("forgot-password-link").addEventListener("click", (e) => {
+        e.preventDefault();
+        showToast("Phase 1 Note: Password recovery is disabled in LocalStorage mock auth mode. (Default demo pass is 'password123')", "info", 5000);
+      });
+    });
+  </script>
+</body>
+</html>
