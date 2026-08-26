@@ -64,7 +64,7 @@ function saveParticipantAccount(account) {
     email: account.email.trim().toLowerCase(),
     phone: (account.phone || "").trim(),
     college: (account.college || "").trim(),
-    year: account.year || "1st Year",
+    year: account.year || "3rd Year",
     username: account.username.trim().toLowerCase(),
     password: account.password, // Phase 1 mock auth
     bio: (account.bio || "").trim(),
@@ -99,7 +99,7 @@ function getHackathonsExtended() {
 function createRichHackathon(data) {
   const hackathons = getHackathons();
   const newHackathon = {
-    id: `hk_${Date.now()}`,
+    id: data.id || `hk_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
     name: data.name.trim(),
     description: (data.description || "").trim(),
     startDate: data.startDate || "",
@@ -109,8 +109,10 @@ function createRichHackathon(data) {
     deadline: data.deadline || "",
     maxParticipants: parseInt(data.maxParticipants, 10) || 50,
     createdBy: data.createdBy || null,
-    teamsGenerated: false,
-    generatedTeams: [],
+    teamsGenerated: data.teamsGenerated || false,
+    generatedTeams: data.generatedTeams || [],
+    badgeColor: data.badgeColor || "#10b981",
+    theme: data.theme || "General",
     createdAt: Date.now()
   };
   hackathons.push(newHackathon);
@@ -233,70 +235,160 @@ function getRecentActivities(limit = 10) {
 }
 
 // ==========================================================================
-// SEED INITIAL DEMO DATA (FOR QUICK LIVE EVALUATION)
+// SEED INITIAL DEMO DATA (FOR QUICK LIVE EVALUATION & 3D RING CAROUSEL)
 // ==========================================================================
 function seedInitialDemoData() {
   const existingHackathons = getHackathons();
-  if (existingHackathons.length > 0) return; // already has data
+  if (existingHackathons.length >= 4) return; // already has sufficient data
 
   // 1. Seed Demo Organizer
-  const demoOrganizer = saveOrganizerAccount({
-    id: "org_demo_1",
-    name: "Dr. Alan Turing",
-    org: "ACM Student Chapter",
-    email: "organizer@hackathon.edu",
-    phone: "+1 555-0199",
-    username: "organizer",
-    password: "password123"
-  });
+  let demoOrganizer = getOrganizers().find(o => o.username === "organizer");
+  if (!demoOrganizer) {
+    demoOrganizer = saveOrganizerAccount({
+      id: "org_demo_1",
+      name: "Dr. Alan Turing",
+      org: "ACM Student Chapter",
+      email: "organizer@hackathon.edu",
+      phone: "+1 555-0199",
+      username: "organizer",
+      password: "password123"
+    });
+  }
 
   // 2. Seed Demo Participant Account
-  const demoParticipant = saveParticipantAccount({
-    id: "pt_demo_1",
-    name: "Alex Rivera",
-    email: "alex@student.edu",
-    phone: "+1 555-0144",
-    college: "Institute of Technology",
-    year: "3rd Year",
-    username: "participant",
-    password: "password123",
-    bio: "Full stack enthusiast passionate about cloud systems and interactive UI design."
-  });
+  let demoParticipant = getParticipantAccounts().find(p => p.username === "participant");
+  if (!demoParticipant) {
+    demoParticipant = saveParticipantAccount({
+      id: "pt_demo_1",
+      name: "Alex Rivera",
+      email: "alex@student.edu",
+      phone: "+1 555-0144",
+      college: "Institute of Technology",
+      year: "3rd Year",
+      username: "participant",
+      password: "password123",
+      bio: "Full stack enthusiast passionate about cloud systems and interactive UI design."
+    });
+  }
 
-  // 3. Seed Demo Hackathon
-  const demoHackathon = createRichHackathon({
-    name: "Antigravity Global Hackathon 2026",
-    description: "48-hour collaborative build sprint challenging students to build intelligent agentic web platforms and accessible tools.",
-    startDate: "2026-09-15",
-    endDate: "2026-09-17",
-    mode: "Hybrid",
-    venue: "Main Auditorium & Discord",
-    deadline: "2026-09-10",
-    maxParticipants: 30,
-    createdBy: demoOrganizer.id
-  });
+  // Clear to reseed rich set if less than 4
+  if (existingHackathons.length < 4) {
+    const richHackathons = [
+      {
+        id: "hk_demo_1",
+        name: "Antigravity Global Hackathon 2026",
+        description: "48-hour collaborative build sprint challenging students to build intelligent agentic web platforms and accessible tools.",
+        startDate: "2026-09-15",
+        endDate: "2026-09-17",
+        mode: "Hybrid",
+        venue: "Main Auditorium & Discord",
+        deadline: "2026-09-10",
+        maxParticipants: 30,
+        createdBy: demoOrganizer.id,
+        theme: "Agentic AI",
+        badgeColor: "#10b981"
+      },
+      {
+        id: "hk_demo_2",
+        name: "Cyberpunk Web3 Sprint",
+        description: "Decentralized applications, smart contract security, and zero-knowledge identity protocols built over a weekend.",
+        startDate: "2026-10-02",
+        endDate: "2026-10-04",
+        mode: "Online",
+        venue: "Global Virtual Discord",
+        deadline: "2026-09-28",
+        maxParticipants: 24,
+        createdBy: demoOrganizer.id,
+        theme: "Web3 & Security",
+        badgeColor: "#6366f1"
+      },
+      {
+        id: "hk_demo_3",
+        name: "Cloud Native DevOps Arena",
+        description: "Deploy fault-tolerant microservices, continuous delivery pipelines, and container orchestrations on live infrastructure.",
+        startDate: "2026-10-18",
+        endDate: "2026-10-20",
+        mode: "Offline",
+        venue: "Tech Innovation Hub (Lab 4)",
+        deadline: "2026-10-12",
+        maxParticipants: 20,
+        createdBy: demoOrganizer.id,
+        theme: "DevOps & Cloud",
+        badgeColor: "#f59e0b"
+      },
+      {
+        id: "hk_demo_4",
+        name: "Neural Nexus AI Challenge",
+        description: "Computer vision, multimodal LLMs, and real-time audio synthesis solutions for high-impact social accessibility.",
+        startDate: "2026-11-05",
+        endDate: "2026-11-07",
+        mode: "Hybrid",
+        venue: "AI Research Center",
+        deadline: "2026-10-30",
+        maxParticipants: 35,
+        createdBy: demoOrganizer.id,
+        theme: "Data & ML",
+        badgeColor: "#8b5cf6"
+      },
+      {
+        id: "hk_demo_5",
+        name: "DesignCraft UI/UX Summit",
+        description: "Product design sprint focusing on micro-interactions, motion design systems, spatial computing, and high usability.",
+        startDate: "2026-11-20",
+        endDate: "2026-11-22",
+        mode: "Online",
+        venue: "Figma & Slack Workspace",
+        deadline: "2026-11-15",
+        maxParticipants: 25,
+        createdBy: demoOrganizer.id,
+        theme: "Design & UX",
+        badgeColor: "#ec4899"
+      },
+      {
+        id: "hk_demo_6",
+        name: "Edge Computing & IoT Jam",
+        description: "Low-latency embedded software, sensor telemetry, and hardware prototypes connecting physical systems to web apps.",
+        startDate: "2026-12-01",
+        endDate: "2026-12-03",
+        mode: "Offline",
+        venue: "Hardware Maker Lab",
+        deadline: "2026-11-25",
+        maxParticipants: 20,
+        createdBy: demoOrganizer.id,
+        theme: "IoT & Hardware",
+        badgeColor: "#06b6d4"
+      }
+    ];
 
-  // 4. Seed 12 Diverse Participants for Team Balancing demonstration
-  const sampleParticipants = [
-    { name: "Alex Rivera", skills: ["Frontend", "Design"], primarySkill: "Frontend", participantId: demoParticipant.id },
-    { name: "Elena Rostova", skills: ["Backend", "DevOps/Cloud"], primarySkill: "Backend" },
-    { name: "Marcus Chen", skills: ["Frontend", "Backend", "Data/ML"], primarySkill: "Data/ML" },
-    { name: "Priya Sharma", skills: ["Design", "Frontend"], primarySkill: "Design" },
-    { name: "Liam O'Connor", skills: ["DevOps/Cloud", "Backend"], primarySkill: "DevOps/Cloud" },
-    { name: "Sophia Martinez", skills: ["Backend", "Data/ML"], primarySkill: "Backend" },
-    { name: "David Kim", skills: ["Frontend", "Design", "Backend"], primarySkill: "Frontend" },
-    { name: "Ananya Patel", skills: ["Data/ML", "DevOps/Cloud"], primarySkill: "Data/ML" },
-    { name: "Noah Williams", skills: ["Design", "Frontend"], primarySkill: "Design" },
-    { name: "Maya Lin", skills: ["DevOps/Cloud", "Backend", "Frontend"], primarySkill: "DevOps/Cloud" },
-    { name: "Jordan Taylor", skills: ["Frontend", "Backend"], primarySkill: "Backend" },
-    { name: "Samira Khan", skills: ["Data/ML", "Frontend"], primarySkill: "Data/ML" }
-  ];
+    localStorage.setItem(HACKATHONS_KEY, JSON.stringify(richHackathons));
 
-  sampleParticipants.forEach(p => {
-    addParticipantToHackathon(demoHackathon.id, p);
-  });
+    // Seed diverse participants for the first hackathon
+    const sampleParticipants = [
+      { name: "Alex Rivera", skills: ["Frontend", "Design"], primarySkill: "Frontend", participantId: demoParticipant.id, college: "Institute of Technology" },
+      { name: "Elena Rostova", skills: ["Backend", "DevOps/Cloud"], primarySkill: "Backend", college: "State Engineering College" },
+      { name: "Marcus Chen", skills: ["Frontend", "Backend", "Data/ML"], primarySkill: "Data/ML", college: "National University" },
+      { name: "Priya Sharma", skills: ["Design", "Frontend"], primarySkill: "Design", college: "Design Academy" },
+      { name: "Liam O'Connor", skills: ["DevOps/Cloud", "Backend"], primarySkill: "DevOps/Cloud", college: "Polytechnic Institute" },
+      { name: "Sophia Martinez", skills: ["Backend", "Data/ML"], primarySkill: "Backend", college: "Institute of Technology" },
+      { name: "David Kim", skills: ["Frontend", "Design", "Backend"], primarySkill: "Frontend", college: "Metropolitan College" },
+      { name: "Ananya Patel", skills: ["Data/ML", "DevOps/Cloud"], primarySkill: "Data/ML", college: "Tech University" },
+      { name: "Noah Williams", skills: ["Design", "Frontend"], primarySkill: "Design", college: "Design Academy" },
+      { name: "Maya Lin", skills: ["DevOps/Cloud", "Backend", "Frontend"], primarySkill: "DevOps/Cloud", college: "Polytechnic Institute" },
+      { name: "Jordan Taylor", skills: ["Frontend", "Backend"], primarySkill: "Backend", college: "State Engineering College" },
+      { name: "Samira Khan", skills: ["Data/ML", "Frontend"], primarySkill: "Data/ML", college: "National University" }
+    ];
 
-  logActivity("Pre-loaded demo participants and hackathon", demoHackathon.id, "system");
+    sampleParticipants.forEach(p => {
+      addParticipantToHackathon("hk_demo_1", p);
+    });
+
+    // Seed a few participants in other hackathons too
+    addParticipantToHackathon("hk_demo_2", { name: "Alex Rivera", skills: ["Frontend", "Backend"], primarySkill: "Frontend", participantId: demoParticipant.id, college: "Institute of Technology" });
+    addParticipantToHackathon("hk_demo_2", { name: "Elena Rostova", skills: ["Backend", "DevOps/Cloud"], primarySkill: "Backend", college: "State Engineering College" });
+    addParticipantToHackathon("hk_demo_3", { name: "Liam O'Connor", skills: ["DevOps/Cloud", "Backend"], primarySkill: "DevOps/Cloud", college: "Polytechnic Institute" });
+
+    logActivity("Pre-loaded 6 hackathons and participants for 3D showcase", "hk_demo_1", "system");
+  }
 }
 
 // Auto-run seeder on script load
