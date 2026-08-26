@@ -1,0 +1,172 @@
+﻿/* ==========================================================================
+   DESIGN SYSTEM — Google Antigravity & DeepMind Inspired Aesthetic
+   Phase 1: Pure Vanilla CSS — High Craft, Motion-rich, Design-grade
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Core Surface Palette (Deep Obsidian / Graphite) */
+  --bg-base: #090d16;
+  --bg-surface: #0f172a;
+  --bg-surface-raised: #1e293b;
+  --bg-surface-glass: rgba(15, 23, 42, 0.75);
+  --bg-surface-hover: #26354a;
+  --bg-card: rgba(22, 32, 50, 0.85);
+
+  /* Brand Accents */
+  --brand-primary: #10b981;        /* Emerald / Growth */
+  --brand-primary-hover: #059669;
+  --brand-primary-glow: rgba(16, 185, 129, 0.25);
+  --brand-secondary: #6366f1;      /* Electric Indigo / Balance */
+  --brand-secondary-hover: #4f46e5;
+  --brand-secondary-glow: rgba(99, 102, 241, 0.25);
+  --brand-amber: #f59e0b;          /* Accent / Alert */
+  --brand-amber-glow: rgba(245, 158, 11, 0.25);
+  --brand-cyan: #06b6d4;           /* Tech / Modern */
+  --brand-rose: #f43f5e;           /* Danger / Destructive */
+
+  /* Skill Category Tokens */
+  --skill-frontend: #3b82f6;       /* Azure */
+  --skill-frontend-bg: rgba(59, 130, 246, 0.15);
+  --skill-backend: #10b981;        /* Emerald */
+  --skill-backend-bg: rgba(16, 185, 129, 0.15);
+  --skill-design: #ec4899;         /* Pink */
+  --skill-design-bg: rgba(236, 72, 153, 0.15);
+  --skill-data: #8b5cf6;           /* Purple */
+  --skill-data-bg: rgba(139, 92, 246, 0.15);
+  --skill-devops: #f59e0b;         /* Amber */
+  --skill-devops-bg: rgba(245, 158, 11, 0.15);
+
+  /* High Contrast Typography */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-muted: #475569;
+  --text-inverse: #090d16;
+
+  /* Border & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.15);
+  --border-focus: var(--brand-primary);
+  --border-glow: rgba(16, 185, 129, 0.4);
+
+  /* Typography Scale */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 28px var(--brand-primary-glow);
+  --shadow-glow-indigo: 0 0 28px var(--brand-secondary-glow);
+
+  /* Layout & Spacing */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+  --container-width: 1240px;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Base Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-base);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 40%, rgba(16, 185, 129, 0.08), transparent);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Headings & Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2.25rem, 4.5vw, 3.75rem); font-weight: 800; }
+h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; }
+h3 { font-size: clamp(1.25rem, 2vw, 1.65rem); font-weight: 600; }
+h4 { font-size: 1.15rem; font-weight: 600; }
+
+p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+a {
+  color: var(--brand-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--text-primary);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px var(--brand-primary-glow); }
+  50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.45); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.92); opacity: 0; }
+  70% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.5s ease-out forwards; }
+.animate-pop-in { animation: popIn 0.45s var(--transition-bounce) forwards; }

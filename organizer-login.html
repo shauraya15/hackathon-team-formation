@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organizer Portal — Synapse Teams</title>
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">⚡</div>
+        <span>Synapse<span style="color:var(--brand-primary)">Teams</span></span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-ghost btn-sm">← Back to Home</a>
+        <a href="participant-login.html" class="btn btn-surface btn-sm">Participant Portal</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== AUTH CONTAINER ==================== -->
+  <main class="auth-page-wrapper">
+    <div class="auth-container">
+      <div class="auth-card">
+        
+        <div class="auth-header">
+          <span class="badge badge-devops" style="margin-bottom:0.5rem;">Organizer Portal</span>
+          <h2 id="auth-title">Organizer Sign In</h2>
+          <p id="auth-subtitle" style="font-size:0.875rem;">Manage hackathons, participants, and team allocations.</p>
+        </div>
+
+        <!-- Auth Tabs -->
+        <div class="auth-tabs">
+          <button id="tab-login-btn" class="auth-tab-btn active" type="button">Sign In</button>
+          <button id="tab-signup-btn" class="auth-tab-btn" type="button">Create Account</button>
+        </div>
+
+        <!-- ==================== LOGIN FORM ==================== -->
+        <form id="organizer-login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-identifier">Username or Email</label>
+            <input type="text" id="login-identifier" class="form-input" placeholder="e.g. organizer or organizer@hackathon.edu" required />
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <label class="form-label" for="login-password">Password</label>
+              <a href="#" id="forgot-password-link" style="font-size:0.8rem;color:var(--text-tertiary);">Forgot password?</a>
+            </div>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
+          </div>
+
+          <p id="login-error" class="form-error-msg"></p>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;margin-top:0.5rem;">
+            Sign In to Dashboard
+          </button>
+
+          <!-- 1-Click Demo Login -->
+          <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border-subtle);text-align:center;">
+            <p style="font-size:0.8rem;color:var(--text-tertiary);margin-bottom:0.65rem;">Evaluating or grading this project?</p>
+            <button type="button" id="demo-login-btn" class="btn btn-ghost btn-sm" style="width:100%;">
+              ⚡ 1-Click Sign In as Demo Organizer
+            </button>
+          </div>
+        </form>
+
+        <!-- ==================== SIGNUP FORM ==================== -->
+        <form id="organizer-signup-form" style="display:none;">
+          <div class="form-group">
+            <label class="form-label" for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" class="form-input" placeholder="e.g. Dr. Alan Turing" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signup-org">Organization / College Name</label>
+            <input type="text" id="signup-org" class="form-input" placeholder="e.g. ACM Student Chapter" required />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="signup-email">Email Address</label>
+              <input type="email" id="signup-email" class="form-input" placeholder="name@college.edu" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-phone">Phone Number</label>
+              <input type="tel" id="signup-phone" class="form-input" placeholder="+1 555-0199" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signup-username">Username</label>
+            <input type="text" id="signup-username" class="form-input" placeholder="e.g. alanturing" required />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="signup-password">Password</label>
+              <input type="password" id="signup-password" class="form-input" placeholder="••••••••" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signup-confirm-password">Confirm Password</label>
+              <input type="password" id="signup-confirm-password" class="form-input" placeholder="••••••••" required />
+            </div>
+          </div>
+
+          <p id="signup-error" class="form-error-msg"></p>
+
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;margin-top:0.5rem;">
+            Create Organizer Account
+          </button>
+        </form>
+
+        <div class="auth-footer-links">
+          <span>Looking to join as a participant?</span>
+          <a href="participant-login.html" style="font-weight:600;margin-left:0.25rem;">Participant Portal →</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/data-store.js"></script>
+  <script src="js/auth-state.js"></script>
+  <script src="js/ui-helpers.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // If already logged in, redirect to dashboard
+      if (getLoggedInOrganizer()) {
+        window.location.href = "organizer-dashboard.html";
+        return;
+      }
+
+      const tabLogin = document.getElementById("tab-login-btn");
+      const tabSignup = document.getElementById("tab-signup-btn");
+      const loginForm = document.getElementById("organizer-login-form");
+      const signupForm = document.getElementById("organizer-signup-form");
+      const authTitle = document.getElementById("auth-title");
+      const authSubtitle = document.getElementById("auth-subtitle");
+
+      tabLogin.addEventListener("click", () => {
+        tabLogin.classList.add("active");
+        tabSignup.classList.remove("active");
+        loginForm.style.display = "block";
+        signupForm.style.display = "none";
+        authTitle.textContent = "Organizer Sign In";
+        authSubtitle.textContent = "Manage hackathons, participants, and team allocations.";
+      });
+
+      tabSignup.addEventListener("click", () => {
+        tabSignup.classList.add("active");
+        tabLogin.classList.remove("active");
+        loginForm.style.display = "none";
+        signupForm.style.display = "block";
+        authTitle.textContent = "Create Organizer Account";
+        authSubtitle.textContent = "Set up your organization to host balanced hackathons.";
+      });
+
+      // Login Submission
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const ident = document.getElementById("login-identifier").value.trim().toLowerCase();
+        const pass = document.getElementById("login-password").value;
+        const errEl = document.getElementById("login-error");
+
+        const organizers = getOrganizers();
+        const found = organizers.find(o => (o.username === ident || o.email === ident) && o.password === pass);
+
+        if (!found) {
+          errEl.textContent = "Invalid username/email or password. Please try again.";
+          return;
+        }
+
+        errEl.textContent = "";
+        setLoggedInOrganizer(found.id);
+        showToast(`Welcome back, ${found.name}!`, "success");
+        setTimeout(() => {
+          window.location.href = "organizer-dashboard.html";
+        }, 400);
+      });
+
+      // Demo 1-Click Login
+      document.getElementById("demo-login-btn").addEventListener("click", () => {
+        const organizers = getOrganizers();
+        let demoOrg = organizers.find(o => o.username === "organizer");
+        if (!demoOrg && organizers.length > 0) demoOrg = organizers[0];
+        
+        if (demoOrg) {
+          setLoggedInOrganizer(demoOrg.id);
+          showToast(`Logged in as demo organizer: ${demoOrg.name}`, "success");
+          setTimeout(() => {
+            window.location.href = "organizer-dashboard.html";
+          }, 300);
+        } else {
+          showToast("Demo organizer account not found.", "error");
+        }
+      });
+
+      // Signup Submission
+      signupForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("signup-name").value.trim();
+        const org = document.getElementById("signup-org").value.trim();
+        const email = document.getElementById("signup-email").value.trim().toLowerCase();
+        const phone = document.getElementById("signup-phone").value.trim();
+        const username = document.getElementById("signup-username").value.trim().toLowerCase();
+        const pass = document.getElementById("signup-password").value;
+        const confirmPass = document.getElementById("signup-confirm-password").value;
+        const errEl = document.getElementById("signup-error");
+
+        if (pass !== confirmPass) {
+          errEl.textContent = "Passwords do not match.";
+          return;
+        }
+
+        if (pass.length < 4) {
+          errEl.textContent = "Password must be at least 4 characters.";
+          return;
+        }
+
+        const organizers = getOrganizers();
+        if (organizers.some(o => o.username === username)) {
+          errEl.textContent = "This username is already taken.";
+          return;
+        }
+        if (organizers.some(o => o.email === email)) {
+          errEl.textContent = "An account with this email already exists.";
+          return;
+        }
+
+        errEl.textContent = "";
+        const newOrg = saveOrganizerAccount({ name, org, email, phone, username, password: pass });
+        setLoggedInOrganizer(newOrg.id);
+        showToast("Account created successfully!", "success");
+        setTimeout(() => {
+          window.location.href = "organizer-dashboard.html";
+        }, 400);
+      });
+
+      // Forgot Password Modal/Toast
+      document.getElementById("forgot-password-link").addEventListener("click", (e) => {
+        e.preventDefault();
+        showToast("Phase 1 Note: Password recovery is disabled in LocalStorage mock auth mode. (Default demo pass is 'password123')", "info", 5000);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Participant Hub — Synapse Teams</title>
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">⚡</div>
+        <span>Synapse<span style="color:var(--brand-primary)">Teams</span></span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="available-hackathons.html" class="btn btn-ghost btn-sm" style="color:var(--brand-cyan);">
+          🌐 3D Orbit View
+        </a>
+        <button id="open-profile-btn" class="btn btn-ghost btn-sm">
+          👤 <span id="nav-participant-name">Student Profile</span>
+        </button>
+        <button id="logout-btn" class="btn btn-surface btn-sm">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN DASHBOARD ==================== -->
+  <main class="dashboard-wrapper">
+    <div class="container">
+
+      <!-- Participant Welcome Header -->
+      <div class="dashboard-header">
+        <div class="user-welcome-block">
+          <div class="user-meta-badge" style="margin-bottom:0.25rem;">
+            <span id="header-college-badge">🎓 Institute of Technology</span> • 
+            <span id="header-year-badge">3rd Year</span>
+          </div>
+          <h1>Welcome, <span id="header-user-name" style="color:var(--brand-primary);">Alex Rivera</span></h1>
+          <p id="header-bio" style="font-size:0.925rem;color:var(--text-secondary);max-width:650px;">
+            Full stack enthusiast passionate about cloud systems and interactive UI design.
+          </p>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+          <a href="#browse-section" class="btn btn-primary btn-glow">
+            🔍 Browse Open Events
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="dashboard-stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Joined Hackathons</span>
+            <span style="color:var(--brand-primary);">🎯</span>
+          </div>
+          <div class="stat-number" id="stat-joined-count">0</div>
+          <div class="stat-subtext">Active registrations</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Teams Assigned</span>
+            <span style="color:var(--brand-secondary);">⚡</span>
+          </div>
+          <div class="stat-number" id="stat-teams-assigned-count" style="color:var(--brand-secondary);">0</div>
+          <div class="stat-subtext">Formations completed</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Skill Tags Verified</span>
+            <span style="color:var(--brand-cyan);">🏷️</span>
+          </div>
+          <div class="stat-number" id="stat-skills-count" style="color:var(--brand-cyan);">0</div>
+          <div class="stat-subtext">Competencies declared</div>
+        </div>
+      </div>
+
+      <!-- ==================== MY TEAM SECTION (WHEN ASSIGNED) ==================== -->
+      <section id="my-team-section" style="display:none;margin-bottom:3.5rem;">
+        <div class="card card-glowing-emerald">
+          <div class="card-header">
+            <div>
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <span class="badge badge-status-assigned">Team Formed</span>
+                <span id="my-team-event-name" style="font-size:0.9rem;color:var(--text-tertiary);"></span>
+              </div>
+              <h2 id="my-team-title" style="font-size:1.75rem;margin-top:0.35rem;">⚡ Your Assigned Team</h2>
+            </div>
+            <span class="badge badge-primary-star">Balanced Cross-Functional Stack</span>
+          </div>
+
+          <p style="font-size:0.925rem;color:var(--text-secondary);margin-bottom:1.5rem;">
+            The greedy balancing algorithm has placed you with teammates having complementary skill sets.
+          </p>
+
+          <!-- Teammates Roster Grid -->
+          <div class="my-team-teammates-grid" id="my-team-members-grid">
+            <!-- Dynamically loaded -->
+          </div>
+
+          <!-- Team Skill Distribution Matrix -->
+          <div class="team-skill-matrix" style="margin-top:2rem;padding:1.25rem;">
+            <div class="team-skill-matrix-title">Team Cross-Functional Competency Matrix</div>
+            <div class="skill-spread-tags" id="my-team-skill-matrix-tags">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== MY HACKATHONS SECTION ==================== -->
+      <section style="margin-bottom:3.5rem;">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" style="font-size:1.45rem;">My Registered Hackathons</h2>
+              <p style="font-size:0.85rem;color:var(--text-tertiary);">Track team assignment status and update declared skills</p>
+            </div>
+            <a href="#browse-section" class="btn btn-ghost btn-sm">+ Join Another Event</a>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Event Name</th>
+                  <th>Dates & Mode</th>
+                  <th>Declared Skills</th>
+                  <th>Status</th>
+                  <th style="text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="my-hackathons-table-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== BROWSE HACKATHONS SECTION ==================== -->
+      <section id="browse-section">
+        <div style="margin-bottom:1.75rem;">
+          <span class="badge badge-devops" style="margin-bottom:0.5rem;">Discovery</span>
+          <h2>Explore Open Hackathons</h2>
+          <p>Join hackathons hosted by verified college organizations and compete in balanced teams.</p>
+        </div>
+
+        <div class="hackathon-browse-grid" id="browse-hackathons-grid">
+          <!-- Loaded dynamically -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ==================== MODAL: REGISTER / JOIN HACKATHON WITH SKILLS ==================== -->
+  <div id="modal-join-hackathon" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-join-title">Register for Hackathon</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-join-hackathon')">&times;</button>
+      </div>
+      <form id="form-join-hackathon">
+        <div class="modal-body">
+          <input type="hidden" id="join-hackathon-id" value="" />
+          <input type="hidden" id="join-participant-id" value="" />
+
+          <div class="form-group">
+            <label class="form-label" for="join-name">Your Full Name</label>
+            <input type="text" id="join-name" class="form-input" readonly style="background:var(--bg-surface-raised);cursor:not-allowed;" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="join-primary-skill">Primary Skill (Your Strongest Domain) *</label>
+            <select id="join-primary-skill" class="form-select" required>
+              <option value="">-- select your strongest skill --</option>
+              <option value="Frontend">Frontend</option>
+              <option value="Backend">Backend</option>
+              <option value="Design">Design</option>
+              <option value="Data/ML">Data/ML</option>
+              <option value="DevOps/Cloud">DevOps/Cloud</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Select Skills (Choose between 2 to 4 skills) *</label>
+            <div class="skill-checkbox-grid">
+              <label class="skill-pill-label">
+                <input type="checkbox" name="join-skill" value="Frontend" /> Frontend
+              </label>
+              <label class="skill-pill-label">
+                <input type="checkbox" name="join-skill" value="Backend" /> Backend
+              </label>
+              <label class="skill-pill-label">
+                <input type="checkbox" name="join-skill" value="Design" /> Design
+              </label>
+              <label class="skill-pill-label">
+                <input type="checkbox" name="join-skill" value="Data/ML" /> Data/ML
+              </label>
+              <label class="skill-pill-label">
+                <input type="checkbox" name="join-skill" value="DevOps/Cloud" /> DevOps/Cloud
+              </label>
+            </div>
+          </div>
+
+          <div id="join-lock-warning" style="display:none;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);padding:0.75rem;border-radius:var(--radius-sm);margin-top:1rem;font-size:0.85rem;color:#fbbf24;">
+            🔒 Teams have already been generated for this hackathon. Skill edits are locked.
+          </div>
+
+          <p id="join-form-error" class="form-error-msg"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modal-join-hackathon')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-registration">Confirm Registration</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PARTICIPANT PROFILE & SETTINGS ==================== -->
+  <div id="modal-participant-profile" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Student Profile & Settings</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-participant-profile')">&times;</button>
+      </div>
+      <form id="form-participant-profile">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="profile-name">Full Name</label>
+            <input type="text" id="profile-name" class="form-input" required />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="profile-college">College / University</label>
+              <input type="text" id="profile-college" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-year">Year of Study</label>
+              <select id="profile-year" class="form-select">
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+                <option value="Postgraduate">Postgraduate</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="profile-email">Email Address</label>
+              <input type="email" id="profile-email" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-phone">Phone Number</label>
+              <input type="tel" id="profile-phone" class="form-input" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-bio">Bio</label>
+            <textarea id="profile-bio" class="form-textarea" rows="2"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-password">Update Password</label>
+            <input type="password" id="profile-password" class="form-input" placeholder="Leave blank to keep unchanged" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modal-participant-profile')">Close</button>
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Core scripts: UNTOUCHED original files + New modules -->
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/balancer.js"></script>
+  <script src="js/data-store.js"></script>
+  <script src="js/auth-state.js"></script>
+  <script src="js/ui-helpers.js"></script>
+  <script src="js/participant.js"></script>
+</body>
+</html>

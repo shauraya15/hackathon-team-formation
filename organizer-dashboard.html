@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Organizer Hub — Synapse Teams</title>
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">⚡</div>
+        <span>Synapse<span style="color:var(--brand-primary)">Teams</span></span>
+      </a>
+
+      <div class="nav-actions">
+        <a href="available-hackathons.html" class="btn btn-ghost btn-sm" style="color:var(--brand-cyan);">
+          🌐 3D Orbit View
+        </a>
+        <button id="open-profile-btn" class="btn btn-ghost btn-sm">
+          👤 <span id="nav-organizer-name">Profile</span>
+        </button>
+        <button id="logout-btn" class="btn btn-surface btn-sm">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN DASHBOARD WORKSPACE ==================== -->
+  <main class="dashboard-wrapper">
+    <div class="container">
+
+      <!-- Dashboard Header -->
+      <div class="dashboard-header">
+        <div class="user-welcome-block">
+          <div class="user-meta-badge" style="margin-bottom:0.25rem;">
+            <span id="header-org-name">ACM Student Chapter</span>
+          </div>
+          <h1>Welcome back, <span id="header-user-name" style="color:var(--brand-primary);">Organizer</span></h1>
+          <p style="font-size:0.925rem;">Manage event rosters, check feasibility, and run balanced team formations.</p>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+          <button id="btn-create-hackathon" class="btn btn-primary btn-glow">
+            + New Hackathon
+          </button>
+        </div>
+      </div>
+
+      <!-- Stat Cards Grid -->
+      <div class="dashboard-stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Total Events</span>
+            <span style="color:var(--brand-cyan);">🗂️</span>
+          </div>
+          <div class="stat-number" id="stat-total-hackathons">0</div>
+          <div class="stat-subtext">Active hackathon records</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Total Participants</span>
+            <span style="color:var(--brand-primary);">👥</span>
+          </div>
+          <div class="stat-number" id="stat-total-participants" style="color:var(--brand-primary);">0</div>
+          <div class="stat-subtext">Across all hosted hackathons</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span>Teams Formed</span>
+            <span style="color:var(--brand-secondary);">⚡</span>
+          </div>
+          <div class="stat-number" id="stat-total-teams" style="color:var(--brand-secondary);">0</div>
+          <div class="stat-subtext">Balanced team allocations</div>
+        </div>
+      </div>
+
+      <!-- Hackathon Control Bar -->
+      <div class="control-panel-bar">
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <label for="hackathon-selector" style="font-weight:600;font-size:0.9rem;color:var(--text-secondary);">Active Event:</label>
+          <select id="hackathon-selector" class="form-select" style="min-width:280px;font-weight:600;">
+            <!-- Loaded dynamically -->
+          </select>
+        </div>
+
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <button id="btn-edit-hackathon" class="btn btn-surface btn-sm" title="Edit Event Details">
+            ✏️ Edit Event
+          </button>
+          <button id="btn-delete-hackathon" class="btn btn-danger btn-sm" title="Delete Hackathon">
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Hackathon Banner Details -->
+      <div id="active-hackathon-banner" class="active-hackathon-banner">
+        <div>
+          <div class="hackathon-banner-title" id="banner-title">Select a Hackathon</div>
+          <p id="banner-desc" style="font-size:0.875rem;margin-bottom:0.75rem;max-width:700px;">
+            Choose an event from the dropdown above or create a new one.
+          </p>
+          <div class="hackathon-meta-tags" id="banner-tags">
+            <!-- Badges for Mode, Venue, Dates, Capacity -->
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <span style="font-size:0.75rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.05em;">Roster Status</span>
+          <span id="banner-capacity-badge" class="badge badge-surface" style="font-size:0.9rem;">0 Registered</span>
+        </div>
+      </div>
+
+      <!-- Workspace Grid (Roster on Left, Team Generation on Right) -->
+      <div class="grid-2" style="align-items:start;margin-bottom:3rem;">
+        
+        <!-- Left: Participant Roster -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Participant Roster</h3>
+              <p style="font-size:0.825rem;color:var(--text-tertiary);">Search and filter candidates in this hackathon</p>
+            </div>
+            <button id="btn-add-participant-modal" class="btn btn-primary btn-sm">
+              + Add Participant
+            </button>
+          </div>
+
+          <!-- Filter & Search Bar -->
+          <div class="roster-filter-bar">
+            <div class="search-input-wrapper">
+              <input type="text" id="roster-search" class="form-input" placeholder="🔍 Search name or skill..." style="padding:0.5rem 0.85rem;font-size:0.85rem;" />
+            </div>
+
+            <div class="category-filter-chips" id="category-filter-chips">
+              <button class="filter-chip-btn active" data-category="ALL">All</button>
+              <button class="filter-chip-btn" data-category="Frontend">Frontend</button>
+              <button class="filter-chip-btn" data-category="Backend">Backend</button>
+              <button class="filter-chip-btn" data-category="Design">Design</button>
+              <button class="filter-chip-btn" data-category="Data/ML">Data/ML</button>
+              <button class="filter-chip-btn" data-category="DevOps/Cloud">DevOps</button>
+            </div>
+          </div>
+
+          <!-- Participant Table -->
+          <div class="data-table-container" style="max-height:480px;overflow-y:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Primary Skill</th>
+                  <th>All Skills</th>
+                  <th style="text-align:right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="participant-table-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;font-size:0.85rem;color:var(--text-tertiary);">
+            <span id="roster-count-label">0 participants listed</span>
+            <button id="btn-clear-all-participants" class="btn btn-ghost btn-sm" style="color:var(--brand-rose);">
+              Clear All Participants
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Team Generation & Results -->
+        <div class="card card-glowing-emerald">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Team Generation Engine</h3>
+              <p style="font-size:0.825rem;color:var(--text-tertiary);">Greedy skill-balancer (MIN: 2, MAX: 5 per team)</p>
+            </div>
+            <span class="preview-code-tag">balancer.js</span>
+          </div>
+
+          <div style="background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:1.25rem;margin-bottom:1.5rem;">
+            <div class="grid-2" style="align-items:flex-end;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="input-team-count">Desired Number of Teams</label>
+                <input type="number" id="input-team-count" class="form-input" min="1" max="50" placeholder="e.g. 3" value="3" />
+              </div>
+
+              <div style="display:flex;gap:0.5rem;">
+                <button id="btn-generate-teams" class="btn btn-primary btn-glow" style="flex:1;">
+                  ⚡ Generate Teams
+                </button>
+              </div>
+            </div>
+
+            <!-- Feasibility Notice Area -->
+            <div id="feasibility-notice" style="margin-top:0.85rem;font-size:0.85rem;"></div>
+          </div>
+
+          <!-- Results Actions (Copy, Export, Regenerate) -->
+          <div id="results-action-bar" style="display:none;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border-subtle);flex-wrap:wrap;gap:0.5rem;">
+            <div style="font-weight:700;color:var(--brand-primary);font-size:1.05rem;">
+              Generated Teams (<span id="results-count">0</span>)
+            </div>
+            <div style="display:flex;gap:0.5rem;">
+              <button id="btn-regenerate-teams" class="btn btn-surface btn-sm" title="Re-run balancing math">
+                🔄 Regenerate
+              </button>
+              <button id="btn-copy-teams" class="btn btn-ghost btn-sm" title="Copy to clipboard">
+                📋 Copy List
+              </button>
+              <button id="btn-export-json" class="btn btn-ghost btn-sm" title="Download JSON">
+                💾 Export JSON
+              </button>
+            </div>
+          </div>
+
+          <!-- Generated Teams Render Container -->
+          <div id="team-cards-container" class="team-results-grid" style="grid-template-columns:1fr;max-height:550px;overflow-y:auto;padding-right:0.25rem;">
+            <div style="text-align:center;padding:3rem 1rem;color:var(--text-tertiary);">
+              <div style="font-size:2.5rem;margin-bottom:0.75rem;">⚖️</div>
+              <p>Select your team count above and click <strong>Generate Teams</strong> to run the balancer algorithm.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Recent Activity Section -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Recent Event Activity</h3>
+          <span style="font-size:0.8rem;color:var(--text-tertiary);">Live LocalStorage events</span>
+        </div>
+        <ul id="activity-log-list" class="activity-list">
+          <!-- Loaded dynamically -->
+        </ul>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== MODAL: CREATE / EDIT HACKATHON ==================== -->
+  <div id="modal-hackathon" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-hackathon-title">Create New Hackathon</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-hackathon')">&times;</button>
+      </div>
+      <form id="form-hackathon-crud">
+        <div class="modal-body">
+          <input type="hidden" id="hackathon-edit-id" value="" />
+
+          <div class="form-group">
+            <label class="form-label" for="hk-name">Hackathon Name *</label>
+            <input type="text" id="hk-name" class="form-input" placeholder="e.g. AI Innovation Sprint 2026" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="hk-desc">Description</label>
+            <textarea id="hk-desc" class="form-textarea" rows="3" placeholder="Brief pitch or themes for participants..."></textarea>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="hk-mode">Event Mode</label>
+              <select id="hk-mode" class="form-select">
+                <option value="Online">Online</option>
+                <option value="Offline">Offline / In-Person</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="hk-venue">Venue / Platform</label>
+              <input type="text" id="hk-venue" class="form-input" placeholder="e.g. Auditorium / Discord" />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="hk-start-date">Start Date</label>
+              <input type="date" id="hk-start-date" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="hk-end-date">End Date</label>
+              <input type="date" id="hk-end-date" class="form-input" />
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="hk-deadline">Registration Deadline</label>
+              <input type="date" id="hk-deadline" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="hk-max-participants">Max Participants Capacity</label>
+              <input type="number" id="hk-max-participants" class="form-input" min="4" max="500" value="40" />
+            </div>
+          </div>
+
+          <p id="hk-form-error" class="form-error-msg"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modal-hackathon')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="hk-submit-btn">Save Hackathon</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD / EDIT PARTICIPANT ==================== -->
+  <div id="modal-participant" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-participant-title">Add Participant</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-participant')">&times;</button>
+      </div>
+      <form id="form-participant-crud">
+        <div class="modal-body">
+          <input type="hidden" id="participant-edit-id" value="" />
+
+          <div class="form-group">
+            <label class="form-label" for="pt-name">Participant Full Name *</label>
+            <input type="text" id="pt-name" class="form-input" placeholder="e.g. Maya Lin" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pt-college">College / University</label>
+            <input type="text" id="pt-college" class="form-input" placeholder="e.g. National Tech University" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pt-primary-skill">Primary Skill (Strongest Domain) *</label>
+            <select id="pt-primary-skill" class="form-select" required>
+              <option value="">-- select primary skill --</option>
+              <option value="Frontend">Frontend</option>
+              <option value="Backend">Backend</option>
+              <option value="Design">Design</option>
+              <option value="Data/ML">Data/ML</option>
+              <option value="DevOps/Cloud">DevOps/Cloud</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Select Skills (Choose between 2 to 4)</label>
+            <div class="skill-checkbox-grid">
+              <label class="skill-pill-label">
+                <input type="checkbox" name="crud-skill" value="Frontend" /> Frontend
+              </label>
+              <label class="skill-pill-label">
+                <input type="checkbox" name="crud-skill" value="Backend" /> Backend
+              </label>
+              <label class="skill-pill-label">
+                <input type="checkbox" name="crud-skill" value="Design" /> Design
+              </label>
+              <label class="skill-pill-label">
+                <input type="checkbox" name="crud-skill" value="Data/ML" /> Data/ML
+              </label>
+              <label class="skill-pill-label">
+                <input type="checkbox" name="crud-skill" value="DevOps/Cloud" /> DevOps/Cloud
+              </label>
+            </div>
+          </div>
+
+          <p id="pt-form-error" class="form-error-msg"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modal-participant')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="pt-submit-btn">Save Participant</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ORGANIZER PROFILE / SETTINGS ==================== -->
+  <div id="modal-profile" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>Organizer Profile & Settings</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-profile')">&times;</button>
+      </div>
+      <form id="form-organizer-profile">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="profile-name">Full Name</label>
+            <input type="text" id="profile-name" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-org">Organization Name</label>
+            <input type="text" id="profile-org" class="form-input" required />
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="profile-email">Email Address</label>
+              <input type="email" id="profile-email" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-phone">Phone Number</label>
+              <input type="tel" id="profile-phone" class="form-input" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-password">Update Password</label>
+            <input type="password" id="profile-password" class="form-input" placeholder="Leave blank to keep unchanged" />
+          </div>
+
+          <p id="profile-msg" class="form-error-msg" style="color:var(--brand-primary);"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('modal-profile')">Close</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Core scripts: UNTOUCHED original files + New modules -->
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/balancer.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/data-store.js"></script>
+  <script src="js/auth-state.js"></script>
+  <script src="js/ui-helpers.js"></script>
+  <script src="js/organizer.js"></script>
+</body>
+</html>
