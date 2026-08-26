@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Formation workspace | Formfactor</title>
+  <link rel="stylesheet" href="../styles/style.css">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
+<body class="formation-page">
+  <header class="dashboard-header">
+    <a class="wordmark" href="organizer-dashboard.html"><span class="mark"></span>form/factor</a>
+    <p id="active-hackathon-label"></p>
+    <nav class="dashboard-nav"><a href="organizer-dashboard.html">Workspace</a><button class="logout" id="logout">Log out</button></nav>
+  </header>
+  <main class="tool-frame"><div class="workspace">
+    <div class="col col-left">
+      <section id="selected-hackathon-panel"><p class="kicker">Selected hackathon</p><h1 id="formation-hackathon-name">Choose an event</h1><p id="formation-hackathon-description">Select a hackathon to load its details and participants.</p><div id="formation-hackathon-meta" class="detail-meta"></div></section>
+      <section id="hackathon-section"><h2>Hackathon</h2><div class="grid-2"><div class="field"><label for="hackathon-select">Select an existing hackathon</label><select id="hackathon-select"><option value="">-- select a hackathon --</option></select></div><div class="field"><label for="new-hackathon-name">Or create a new one</label><div class="inline"><input type="text" id="new-hackathon-name" placeholder="e.g. Winter Hackathon 2026"><button id="create-hackathon-btn" type="button">Create</button></div></div></div></section>
+      <section id="team-config-panel"><p class="kicker">Team configuration</p><div class="config-grid"><span>Minimum members <strong>2</strong></span><span>Maximum members <strong>5</strong></span><span>Teams requested <strong id="formation-team-count">Not set</strong></span></div></section>
+      <section id="participant-form-section"><h2>Add Participant</h2><form id="participant-form"><div class="grid-2"><div class="field"><label for="participant-name">Name</label><input type="text" id="participant-name" required></div><div class="field"><label for="primary-skill">Primary skill</label><select id="primary-skill"><option value="">-- select your strongest skill --</option><option>Frontend</option><option>Backend</option><option>Design</option><option>Data/ML</option><option>DevOps/Cloud</option></select></div></div><fieldset><legend>Select your skills (choose 2 to 4)</legend><label><input type="checkbox" name="skill" value="Frontend"> Frontend</label><label><input type="checkbox" name="skill" value="Backend"> Backend</label><label><input type="checkbox" name="skill" value="Design"> Design</label><label><input type="checkbox" name="skill" value="Data/ML"> Data/ML</label><label><input type="checkbox" name="skill" value="DevOps/Cloud"> DevOps/Cloud</label></fieldset><p id="form-error" class="error-text"></p><button type="submit">Add Participant</button></form></section>
+      <section id="team-generation-section" class="actionbar"><h2>Generate Teams</h2><div class="inline"><div class="field field-sm"><label for="team-count">Number of teams</label><input type="number" id="team-count" min="2"></div><button id="generate-teams-btn">Generate Teams</button><button id="clear-participants-btn" type="button" class="ghost">Clear All</button></div><p id="generation-status" class="success-text"></p></section>
+    </div>
+    <div class="col col-right"><section id="participant-roster"><h2 class="sticky-head">Participants</h2><div id="formation-participant-list"><p class="empty-state">Select a hackathon to load participants.</p></div></section><section id="results-section"><h2 class="sticky-head">Teams</h2><p id="no-teams-message" class="empty-state">No teams generated yet.</p><div id="team-cards-container"></div><div class="result-actions"><button id="copy-teams-btn" type="button">Copy team list</button><button id="export-teams-btn" type="button" class="ghost">Export CSV</button></div></section></div>
+  </div></main>
+  <script src="../js/storage.js"></script><script src="../js/validation.js"></script><script src="../js/balancer.js"></script><script src="../js/render.js"></script>
+  <script>const requestedHackathon = new URLSearchParams(window.location.search).get('hackathon');</script><script src="../js/app.js"></script><script src="../js/dashboard.js"></script><script src="../js/team-state.js"></script>
+  <script>
+    generateBtn.addEventListener('click', () => { if (!activeHackathonId) return; const participants = getParticipants(activeHackathonId); const numTeams = parseInt(document.getElementById('team-count').value, 10); if (canFormTeams(participants.length, numTeams).valid) { saveTeams(activeHackathonId, generateTeams(participants, numTeams)); addActivity(`Teams generated for ${hackathonSelect.options[hackathonSelect.selectedIndex].text}`); document.getElementById('generation-status').textContent = 'Teams saved. Participants can now see their assignments.'; } });
+    if (requestedHackathon) { hackathonSelect.value = requestedHackathon; hackathonSelect.dispatchEvent(new Event('change')); }
+    document.getElementById('logout').addEventListener('click', () => { localStorage.removeItem('loggedInOrganizerId'); window.location.href = 'index.html'; });
+    function teamListText() { const result = getSavedTeams(activeHackathonId); if (!result) return ''; return result.teams.map((team) => `Team ${team.id}: ${team.members.map((member) => `${member.name} (${member.primarySkill})`).join(', ')}`).join('\n'); }
+    document.getElementById('copy-teams-btn').addEventListener('click', async () => { const text = teamListText(); if (text) { await navigator.clipboard.writeText(text); document.getElementById('generation-status').textContent = 'Team list copied.'; } });
+    document.getElementById('export-teams-btn').addEventListener('click', () => { const result = getSavedTeams(activeHackathonId); if (!result) return; const rows = ['Team,Name,Primary skill', ...result.teams.flatMap((team) => team.members.map((member) => `${team.id},${member.name},${member.primarySkill}`))]; const link = document.createElement('a'); link.href = URL.createObjectURL(new Blob([rows.join('\n')], { type: 'text/csv' })); link.download = 'team-list.csv'; link.click(); URL.revokeObjectURL(link.href); });
+  </script>
+  <script src="../js/formation.js"></script>
+</body>
+</html>
