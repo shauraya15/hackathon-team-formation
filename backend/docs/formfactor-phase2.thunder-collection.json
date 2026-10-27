@@ -1,0 +1,326 @@
+{
+    "client":  "Thunder Client",
+    "collectionName":  "Formfactor Phase 2 API",
+    "dateExported":  "2026-10-21T00:00:00.000Z",
+    "version":  "1.1",
+    "folders":  [
+
+                ],
+    "requests":  [
+                     {
+                         "_id":  "req_formfactor_health",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Health",
+                         "url":  "{{baseUrl}}/health",
+                         "method":  "GET",
+                         "sortNum":  1,
+                         "headers":  [
+
+                                     ],
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_skills",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Skills",
+                         "url":  "{{baseUrl}}/skills",
+                         "method":  "GET",
+                         "sortNum":  2,
+                         "headers":  [
+
+                                     ],
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_organizer_signup",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Organizer signup",
+                         "url":  "{{baseUrl}}/auth/signup",
+                         "method":  "POST",
+                         "sortNum":  3,
+                         "headers":  [
+                                         {
+                                             "name":  "Content-Type",
+                                             "value":  "application/json"
+                                         }
+                                     ],
+                         "body":  {
+                                      "type":  "json",
+                                      "raw":  "{\"name\":\"Demo Organizer\",\"email\":\"organizer-{{timestamp}}@example.com\",\"username\":\"organizer-{{timestamp}}\",\"password\":\"password123\",\"role\":\"organizer\",\"organization\":\"Formfactor Demo\"}"
+                                  },
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_participant_signup",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Participant signup",
+                         "url":  "{{baseUrl}}/auth/signup",
+                         "method":  "POST",
+                         "sortNum":  4,
+                         "headers":  [
+                                         {
+                                             "name":  "Content-Type",
+                                             "value":  "application/json"
+                                         }
+                                     ],
+                         "body":  {
+                                      "type":  "json",
+                                      "raw":  "{\"name\":\"Demo Participant\",\"email\":\"participant-{{timestamp}}@example.com\",\"username\":\"participant-{{timestamp}}\",\"password\":\"password123\",\"role\":\"participant\",\"college\":\"Demo College\",\"year\":\"4th\"}"
+                                  },
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_organizer_login",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Organizer login",
+                         "url":  "{{baseUrl}}/auth/login",
+                         "method":  "POST",
+                         "sortNum":  5,
+                         "headers":  [
+                                         {
+                                             "name":  "Content-Type",
+                                             "value":  "application/json"
+                                         }
+                                     ],
+                         "body":  {
+                                      "type":  "json",
+                                      "raw":  "{\"login\":\"organizer-REPLACE_TIMESTAMP\",\"password\":\"password123\"}"
+                                  },
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_create_hackathon",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Create hackathon",
+                         "url":  "{{baseUrl}}/hackathons",
+                         "method":  "POST",
+                         "sortNum":  6,
+                         "headers":  [
+                                         {
+                                             "name":  "Content-Type",
+                                             "value":  "application/json"
+                                         },
+                                         {
+                                             "name":  "Authorization",
+                                             "value":  "Bearer {{organizerToken}}"
+                                         }
+                                     ],
+                         "body":  {
+                                      "type":  "json",
+                                      "raw":  "{\"name\":\"Phase 2 Demo Hackathon\",\"description\":\"API evaluation event\",\"mode\":\"Online\",\"maxParticipants\":20}"
+                                  },
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_list_hackathons",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "List hackathons",
+                         "url":  "{{baseUrl}}/hackathons",
+                         "method":  "GET",
+                         "sortNum":  7,
+                         "headers":  [
+
+                                     ],
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_register_participant",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Register participant",
+                         "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/participants",
+                         "method":  "POST",
+                         "sortNum":  8,
+                         "headers":  [
+                                         {
+                                             "name":  "Content-Type",
+                                             "value":  "application/json"
+                                         },
+                                         {
+                                             "name":  "Authorization",
+                                             "value":  "Bearer {{participantToken}}"
+                                         }
+                                     ],
+                         "body":  {
+                                      "type":  "json",
+                                      "raw":  "{\"name\":\"Demo Participant\",\"skills\":[\"Frontend\",\"Design\"],\"primarySkill\":\"Frontend\"}"
+                                  },
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_list_participants",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "List participants",
+                         "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/participants",
+                         "method":  "GET",
+                         "sortNum":  9,
+                         "headers":  [
+                                         {
+                                             "name":  "Authorization",
+                                             "value":  "Bearer {{organizerToken}}"
+                                         }
+                                     ],
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_generate_teams",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Generate teams",
+                         "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/teams/generate",
+                         "method":  "POST",
+                         "sortNum":  10,
+                         "headers":  [
+                                         {
+                                             "name":  "Content-Type",
+                                             "value":  "application/json"
+                                         },
+                                         {
+                                             "name":  "Authorization",
+                                             "value":  "Bearer {{organizerToken}}"
+                                         }
+                                     ],
+                         "body":  {
+                                      "type":  "json",
+                                      "raw":  "{\"teamCount\":1}"
+                                  },
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_get_teams",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Get teams",
+                         "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/teams",
+                         "method":  "GET",
+                         "sortNum":  11,
+                         "headers":  [
+
+                                     ],
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     },
+                     {
+                         "_id":  "req_formfactor_analytics",
+                         "colId":  "col_formfactor_phase2",
+                         "name":  "Analytics",
+                         "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/analytics",
+                         "method":  "GET",
+                         "sortNum":  12,
+                         "headers":  [
+                                         {
+                                             "name":  "Authorization",
+                                             "value":  "Bearer {{organizerToken}}"
+                                         }
+                                     ],
+                         "params":  [
+
+                                    ],
+                         "containerId":  "",
+                         "created":  "2026-10-23T12:06:45.9208831Z",
+                         "modified":  "2026-10-23T12:06:45.9208831Z",
+                         "tests":  [
+
+                                   ]
+                     }
+                 ],
+    "settings":  {
+                     "headers":  [
+
+                                 ],
+                     "auth":  {
+                                  "type":  "none",
+                                  "none":  {
+
+                                           }
+                              },
+                     "env":  [],
+                     "tests":  [
+
+                               ]
+                 }
+}

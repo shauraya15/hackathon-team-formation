@@ -1,0 +1,194 @@
+{
+    "info":  {
+                 "name":  "Formfactor Phase 2 API",
+                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+             },
+    "variable":  [
+                     {
+                         "key":  "baseUrl",
+                         "value":  "http://localhost:3000/api"
+                     },
+                     {
+                         "key":  "organizerToken",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "participantToken",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "hackathonId",
+                         "value":  ""
+                     }
+                 ],
+    "item":  [
+                 {
+                     "name":  "Health",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  "{{baseUrl}}/health"
+                                 }
+                 },
+                 {
+                     "name":  "Skills",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  "{{baseUrl}}/skills"
+                                 }
+                 },
+                 {
+                     "name":  "Organizer signup",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\"name\":\"Demo Organizer\",\"email\":\"organizer@example.com\",\"username\":\"demo-organizer\",\"password\":\"password123\",\"role\":\"organizer\",\"organization\":\"Formfactor Demo\"}"
+                                              },
+                                     "url":  "{{baseUrl}}/auth/signup"
+                                 }
+                 },
+                 {
+                     "name":  "Participant signup",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\"name\":\"Demo Participant\",\"email\":\"participant@example.com\",\"username\":\"demo-participant\",\"password\":\"password123\",\"role\":\"participant\",\"college\":\"Demo College\",\"year\":\"4th\"}"
+                                              },
+                                     "url":  "{{baseUrl}}/auth/signup"
+                                 }
+                 },
+                 {
+                     "name":  "Login",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\"login\":\"demo-organizer\",\"password\":\"password123\"}"
+                                              },
+                                     "url":  "{{baseUrl}}/auth/login"
+                                 }
+                 },
+                 {
+                     "name":  "Create hackathon",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Authorization",
+                                                        "value":  "Bearer {{organizerToken}}"
+                                                    },
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\"name\":\"Phase 2 Demo Hackathon\",\"description\":\"API evaluation event\",\"mode\":\"Online\",\"maxParticipants\":20}"
+                                              },
+                                     "url":  "{{baseUrl}}/hackathons"
+                                 }
+                 },
+                 {
+                     "name":  "List hackathons",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  "{{baseUrl}}/hackathons"
+                                 }
+                 },
+                 {
+                     "name":  "Register participant",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Authorization",
+                                                        "value":  "Bearer {{participantToken}}"
+                                                    },
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\"name\":\"Demo Participant\",\"skills\":[\"Frontend\",\"Design\"],\"primarySkill\":\"Frontend\"}"
+                                              },
+                                     "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/participants"
+                                 }
+                 },
+                 {
+                     "name":  "List participants",
+                     "request":  {
+                                     "method":  "GET",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Authorization",
+                                                        "value":  "Bearer {{organizerToken}}"
+                                                    }
+                                                ],
+                                     "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/participants"
+                                 }
+                 },
+                 {
+                     "name":  "Generate teams",
+                     "request":  {
+                                     "method":  "POST",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Authorization",
+                                                        "value":  "Bearer {{organizerToken}}"
+                                                    },
+                                                    {
+                                                        "key":  "Content-Type",
+                                                        "value":  "application/json"
+                                                    }
+                                                ],
+                                     "body":  {
+                                                  "mode":  "raw",
+                                                  "raw":  "{\"teamCount\":1}"
+                                              },
+                                     "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/teams/generate"
+                                 }
+                 },
+                 {
+                     "name":  "Get teams",
+                     "request":  {
+                                     "method":  "GET",
+                                     "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/teams"
+                                 }
+                 },
+                 {
+                     "name":  "Get analytics",
+                     "request":  {
+                                     "method":  "GET",
+                                     "header":  [
+                                                    {
+                                                        "key":  "Authorization",
+                                                        "value":  "Bearer {{organizerToken}}"
+                                                    }
+                                                ],
+                                     "url":  "{{baseUrl}}/hackathons/{{hackathonId}}/analytics"
+                                 }
+                 }
+             ]
+}

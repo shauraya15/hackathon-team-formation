@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Participant dashboard | Formfactor</title><link rel="stylesheet" href="../styles/dashboard.css"></head>
+<body data-dashboard="participant">
+  <header class="dashboard-header"><a class="wordmark" href="index.html"><span class="mark"></span>form/factor</a><nav class="dashboard-nav"><a href="#browse">Browse events</a><a href="#my-events">My hackathons</a><button class="logout" id="logout">Log out</button></nav></header>
+  <main class="dashboard-main">
+    <section class="dashboard-intro"><div><p class="kicker">Participant dashboard / 02</p><h1 class="dashboard-title">Welcome, <em id="account-name">builder</em>.</h1></div><p class="feature-intro">Your next team starts with the strengths you bring to the room.</p></section>
+    <section id="browse"><div class="workspace-heading"><h2>Browse hackathons</h2><p>Find a room that needs your point of view.</p></div><div class="event-layout"><div class="event-list" id="event-list"></div><div class="event-detail" id="event-detail"><h3>Choose an event.</h3><p>Hackathon details will appear here.</p></div></div></section>
+    <section class="panel" id="my-events"><p class="kicker">Your formation status</p><h2>My hackathons</h2><div id="joined-events" class="joined-list">You have not joined an event yet.</div></section>
+  </main>
+  <script src="../js/api-client.js"></script><script src="../js/api-participant-dashboard.js"></script>
+</body>
+</html>

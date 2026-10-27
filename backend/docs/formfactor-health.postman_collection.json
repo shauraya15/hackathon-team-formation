@@ -1,0 +1,39 @@
+{
+  "info": {
+    "_postman_id": "4c75ef8b-2e6d-4c54-9d8f-formfactor",
+    "name": "Formfactor Phase 2 - Health",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Skills",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/skills",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "skills"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

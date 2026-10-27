@@ -1,0 +1,92 @@
+@baseUrl = http://localhost:3000/api
+@organizerToken = paste-organizer-token-here
+@participantToken = paste-participant-token-here
+@hackathonId = paste-hackathon-id-here
+
+### Health
+GET {{baseUrl}}/health
+
+### Skills
+GET {{baseUrl}}/skills
+
+### Organizer signup
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Demo Organizer",
+  "email": "organizer@example.com",
+  "username": "demo-organizer",
+  "password": "password123",
+  "role": "organizer",
+  "organization": "Formfactor Demo"
+}
+
+### Participant signup
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Demo Participant",
+  "email": "participant@example.com",
+  "username": "demo-participant",
+  "password": "password123",
+  "role": "participant",
+  "college": "Demo College",
+  "year": "4th"
+}
+
+### Organizer login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "login": "demo-organizer",
+  "password": "password123"
+}
+
+### Create hackathon
+POST {{baseUrl}}/hackathons
+Authorization: Bearer {{organizerToken}}
+Content-Type: application/json
+
+{
+  "name": "Phase 2 Demo Hackathon",
+  "description": "API evaluation event",
+  "mode": "Online",
+  "maxParticipants": 20
+}
+
+### List hackathons
+GET {{baseUrl}}/hackathons
+
+### Register participant
+POST {{baseUrl}}/hackathons/{{hackathonId}}/participants
+Authorization: Bearer {{participantToken}}
+Content-Type: application/json
+
+{
+  "name": "Demo Participant",
+  "skills": ["Frontend", "Design"],
+  "primarySkill": "Frontend"
+}
+
+### List participants
+GET {{baseUrl}}/hackathons/{{hackathonId}}/participants
+Authorization: Bearer {{organizerToken}}
+
+### Generate teams
+POST {{baseUrl}}/hackathons/{{hackathonId}}/teams/generate
+Authorization: Bearer {{organizerToken}}
+Content-Type: application/json
+
+{
+  "teamCount": 1
+}
+
+### Get teams
+GET {{baseUrl}}/hackathons/{{hackathonId}}/teams
+
+### Get analytics
+GET {{baseUrl}}/hackathons/{{hackathonId}}/analytics
+Authorization: Bearer {{organizerToken}}
