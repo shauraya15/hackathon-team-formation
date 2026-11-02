@@ -1,7 +1,4 @@
-const isLocalDevelopment = window.location.protocol === "file:" || ["localhost", "127.0.0.1"].includes(window.location.hostname);
-const API_BASE = isLocalDevelopment
-  ? "http://localhost:3000/api"
-  : "https://form-factor-api.onrender.com/api";
+const API_BASE = "https://form-factor-api.onrender.com/api";
 
 function getApiToken() {
   return localStorage.getItem("formfactorApiToken");
