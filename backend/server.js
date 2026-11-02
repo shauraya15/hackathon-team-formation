@@ -10,8 +10,17 @@ const apiRouter = require("./src/routes");
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 const frontendPath = path.join(__dirname, "..", "frontend");
+const allowedOrigins = new Set([
+  process.env.CLIENT_ORIGIN,
+  "https://hackathon-team-formation.vercel.app"
+].filter(Boolean));
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || true }));
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    return callback(new Error("Origin is not allowed by CORS."));
+  }
+}));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.static(frontendPath));
 
