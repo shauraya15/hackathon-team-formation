@@ -28,9 +28,14 @@ async function apiRequest(path, options = {}) {
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(body.error || `Request failed with status ${response.status}.`);
-  return body;
+  const responseData = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const errorMessage = responseData.error || `Request failed with status ${response.status}.`;
+    throw new Error(errorMessage);
+  }
+
+  return responseData;
 }
 
 async function apiGet(path) {
