@@ -1,10 +1,35 @@
 # Formfactor
 
-Formfactor is a hackathon team-formation application. Organizers create
-hackathons, participants register their skills, and the backend generates
-balanced teams using each participant's primary skill.
+Formfactor is a hackathon team-formation application that helps organizers create hackathons, register participants, and generate balanced teams based on participant skills.
 
-The project is organized into two application folders:
+## Features
+
+- Organizer signup and login
+- Participant signup and login
+- Hackathon creation and management
+- Participant registration
+- Skill-based team generation
+- Team results and analytics
+- REST API built with Express
+- MongoDB Atlas database integration
+- Bearer-token authentication
+- Role-based authorization
+- Postman API collection
+- Automated backend tests
+- Render deployment configuration
+
+## Technology Stack
+
+| Component | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Node.js, Express.js |
+| Database | MongoDB Atlas, Mongoose |
+| Authentication | Bearer Tokens, Role-Based Authorization |
+| Testing | Node.js Test Runner, Postman |
+| Deployment | Render |
+
+## Project Structure
 
 ```text
 hackathon-team-formation/
@@ -23,107 +48,280 @@ hackathon-team-formation/
 │   │   ├── models.js
 │   │   └── routes.js
 │   ├── tests/
-│   └── docs/
+│   ├── docs/
+│   ├── .env.example
+│   └── render.yaml
+├── .gitignore
 └── README.md
 ```
 
-## Technology
+## Prerequisites
 
-- Frontend: HTML, CSS, and JavaScript
-- Backend: Node.js and Express
-- Database: MongoDB Atlas with Mongoose
-- Authentication: bearer tokens and role-based authorization
-- Testing: Node test runner and Postman
+Install the following before running the project:
 
-## Run locally
+- Node.js 18 or later
+- npm
+- MongoDB Atlas account and database
+- Git
 
-From the `backend` folder:
+Verify your Node.js and npm versions:
+
+```powershell
+node --version
+npm --version
+```
+
+## Running the Application Locally
+
+### 1. Clone the Repository
+
+```powershell
+git clone <repository-url>
+cd hackathon-team-formation
+```
+
+### 2. Install Backend Dependencies
 
 ```powershell
 cd backend
 npm install
-Copy-Item .env.example .env
-npm start
 ```
 
-Set these values in `backend/.env`:
+### 3. Configure Environment Variables
+
+Copy the example environment file:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Update `backend/.env` with your configuration:
 
 ```env
 PORT=3000
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/<database>?retryWrites=true&w=majority
-JWT_SECRET=<private-secret>
+JWT_SECRET=<long-random-private-secret>
 CLIENT_ORIGIN=http://localhost:3000
 ```
 
-Never commit `backend/.env` or expose the MongoDB password.
+### Environment Variables
 
-Open the frontend through the backend server:
+| Variable | Description | Example |
+|---|---|---|
+| `PORT` | Port used by the Express server | `3000` |
+| `MONGODB_URI` | MongoDB Atlas connection string | `mongodb+srv://...` |
+| `JWT_SECRET` | Private secret used to sign authentication tokens | A long random secret |
+| `CLIENT_ORIGIN` | Allowed client origin for CORS | `http://localhost:3000` |
+
+**Important:** Never commit `backend/.env` or expose your MongoDB credentials and JWT secret.
+
+### 4. Start the Server
+
+```powershell
+npm start
+```
+
+For development with automatic server restarts:
+
+```powershell
+npm run dev
+```
+
+The application will be available at:
 
 ```text
 http://localhost:3000/
 ```
 
-The backend serves the files in `frontend/`, so the browser uses the same
-origin as the API.
+The Express backend serves the frontend files and API from the same origin.
 
-## MVC responsibilities
+## Application Workflow
 
-- Models: `backend/src/models.js` defines accounts, hackathons, participants,
-  and team results.
-- Views: `frontend/` contains the browser pages and presentation assets.
-- Controllers/routes: `backend/src/routes.js` validates requests, applies
-  authentication and role checks, reads/writes models, and returns API
-  responses.
-- Configuration: `backend/src/config/database.js` connects to MongoDB Atlas.
+### Organizer Workflow
 
-## API endpoints
+1. Create an organizer account.
+2. Log in as an organizer.
+3. Create a hackathon.
+4. Add or manage hackathon details.
+5. View registered participants.
+6. Generate teams based on participant skills.
+7. View generated teams and analytics.
 
-```text
-GET  /api/health
-GET  /api/skills
-POST /api/auth/signup
-POST /api/auth/login
-GET  /api/auth/me
-GET  /api/hackathons
-POST /api/hackathons
-GET  /api/hackathons/:hackathonId
-POST /api/hackathons/:hackathonId/participants
-GET  /api/hackathons/:hackathonId/participants
-POST /api/hackathons/:hackathonId/teams/generate
-GET  /api/hackathons/:hackathonId/teams
-GET  /api/hackathons/:hackathonId/analytics
-```
+### Participant Workflow
 
-## API testing
+1. Create a participant account.
+2. Log in as a participant.
+3. Join an available hackathon.
+4. Provide the required profile and skill information.
+5. View participation and team results.
 
-Postman files are in `backend/docs/`. Import the collection and environment,
-select the `Formfactor Local` environment, and run requests in this order:
+## Data Storage
 
-1. Health and skills
-2. Organizer and participant signup/login
-3. Create a hackathon
-4. Register participants
-5. List participants
-6. Generate teams
-7. Retrieve saved teams
-8. View analytics
+The backend stores accounts, hackathons, participants, and generated team results in MongoDB through Mongoose.
 
-The frontend performs the same workflow through:
+Some frontend interface state, including session and dashboard-related information, may also be stored in the browser's `localStorage`. Clearing browser storage can remove that local frontend state.
+
+## Architecture
 
 ```text
-Frontend → Express REST API → MongoDB Atlas
+                 Browser
+                    |
+                    v
+              Express Server
+               /          \
+              v            v
+       Frontend Files   REST API
+                            |
+                            v
+                       MongoDB Atlas
 ```
 
-## Tests
+### MVC Responsibilities
 
-From `backend`:
+- **Models:** `backend/src/models.js` defines accounts, hackathons, participants, and team results.
+- **Views:** `frontend/` contains browser pages and presentation assets.
+- **Routes and Controllers:** `backend/src/routes.js` validates requests, applies authentication and authorization, reads and writes models, and returns API responses.
+- **Authentication:** `backend/src/auth.js` handles bearer-token authentication and role checks.
+- **Configuration:** `backend/src/config/database.js` connects to MongoDB Atlas.
+- **Server Entry Point:** `backend/server.js` configures Express, serves the frontend, and starts the API.
+
+## API Endpoints
+
+All API endpoints use the `/api` prefix.
+
+| Method | Endpoint | Authentication |
+|---|---|---|
+| `GET` | `/api/health` | Not required |
+| `GET` | `/api/skills` | Not required |
+| `POST` | `/api/auth/signup` | Not required |
+| `POST` | `/api/auth/login` | Not required |
+| `GET` | `/api/auth/me` | Bearer token |
+| `GET` | `/api/hackathons` | Bearer token |
+| `POST` | `/api/hackathons` | Organizer |
+| `GET` | `/api/hackathons/:hackathonId` | Bearer token |
+| `POST` | `/api/hackathons/:hackathonId/participants` | Participant |
+| `GET` | `/api/hackathons/:hackathonId/participants` | Organizer |
+| `POST` | `/api/hackathons/:hackathonId/teams/generate` | Organizer |
+| `GET` | `/api/hackathons/:hackathonId/teams` | Bearer token |
+| `GET` | `/api/hackathons/:hackathonId/analytics` | Organizer |
+
+### Authentication Header
+
+Protected requests should include:
+
+```http
+Authorization: Bearer <token>
+```
+
+### Health Check
+
+```http
+GET http://localhost:3000/api/health
+```
+
+Example response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+### Signup Example
+
+```http
+POST http://localhost:3000/api/auth/signup
+Content-Type: application/json
+```
+
+Request body:
+
+```json
+{
+  "name": "Example User",
+  "email": "user@example.com",
+  "password": "secure-password",
+  "role": "participant"
+}
+```
+
+### Login Example
+
+```http
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+```
+
+Request body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "secure-password"
+}
+```
+
+The login response provides a bearer token for protected API requests.
+
+## API Testing
+
+API testing resources are available in:
+
+```text
+backend/docs/
+```
+
+Available files include:
+
+- `formfactor-phase2.http`
+- `formfactor-phase2.postman_collection.json`
+- `formfactor-health.postman_collection.json`
+- `formfactor-local.postman_environment.json`
+- `formfactor-phase2.thunder-collection.json`
+
+### Recommended Request Order
+
+1. Check the health endpoint.
+2. Retrieve supported skills.
+3. Create an organizer account.
+4. Log in as the organizer.
+5. Create a hackathon.
+6. Create a participant account.
+7. Log in as the participant.
+8. Register the participant for the hackathon.
+9. List participants.
+10. Generate teams as the organizer.
+11. Retrieve the generated teams.
+12. View analytics.
+
+### Postman Setup
+
+1. Import the collection from `backend/docs/`.
+2. Import the `Formfactor Local` environment.
+3. Select the imported environment.
+4. Set `baseUrl` to:
+
+```text
+http://localhost:3000/api
+```
+
+5. Run the requests in the recommended order.
+
+## Running Tests
+
+From the `backend` directory:
 
 ```powershell
 npm test
 ```
 
-The test suite checks the health endpoint, supported skills, and protected
-authentication behavior without requiring a live database connection.
+The test suite checks:
+
+- API health status
+- Supported skill categories
+- Protected API routes without authentication
+
+The tests do not require a live MongoDB connection for the covered cases.
 
 ## Deployment checklist
 
@@ -142,5 +340,3 @@ This repository includes `backend/render.yaml` as a deployment reference.
 
 The frontend is served by the Express backend and uses same-origin `/api`
 requests, so it does not need a separate frontend deployment for this project.
-git clone <repository-url>
-cd hackathon-team-formation

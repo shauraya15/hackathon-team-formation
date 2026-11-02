@@ -1,4 +1,7 @@
-const API_BASE = window.location.protocol === "file:" ? "http://localhost:3000/api" : "/api";
+const isLocalDevelopment = window.location.protocol === "file:" || ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const API_BASE = isLocalDevelopment
+  ? "http://localhost:3000/api"
+  : "https://form-factor-api.onrender.com/api";
 
 function getApiToken() {
   return localStorage.getItem("formfactorApiToken");
@@ -28,9 +31,14 @@ async function apiRequest(path, options = {}) {
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(body.error || `Request failed with status ${response.status}.`);
-  return body;
+  const responseData = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const errorMessage = responseData.error || `Request failed with status ${response.status}.`;
+    throw new Error(errorMessage);
+  }
+
+  return responseData;
 }
 
 async function apiGet(path) {

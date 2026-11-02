@@ -3,7 +3,10 @@ const { Hackathon, Participant, SKILLS } = require("../models");
 const isObjectId = value => /^[a-f\d]{24}$/i.test(value);
 
 async function listHackathons(req, res) {
-  const filter = req.query.organizerId && isObjectId(req.query.organizerId) ? { organizerId: req.query.organizerId } : {};
+  const organizerId = req.query.organizerId;
+  const filter = organizerId && isObjectId(organizerId)
+    ? { organizerId }
+    : {};
   const hackathons = await Hackathon.find(filter).sort({ createdAt: -1 }).lean();
   const counts = await Participant.aggregate([{ $group: { _id: "$hackathonId", count: { $sum: 1 } } }]);
   const countMap = Object.fromEntries(counts.map(item => [item._id.toString(), item.count]));
