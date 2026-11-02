@@ -142,3 +142,5 @@ This repository includes `backend/render.yaml` as a deployment reference.
 
 The frontend is served by the Express backend and uses same-origin `/api`
 requests, so it does not need a separate frontend deployment for this project.
+git clone <repository-url>
+cd hackathon-team-formation
